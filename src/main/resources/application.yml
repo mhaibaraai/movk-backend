@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: movk-backend
+
+  # 默认激活开发环境，可通过启动参数覆盖
+  # 使用: --spring.profiles.active=prod 切换到生产环境
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+server:
+  port: 36600
+  servlet:
+    context-path: /api

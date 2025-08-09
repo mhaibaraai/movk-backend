@@ -1,0 +1,33 @@
+spring:
+  # 数据源配置（通过SSH隧道）
+  datasource:
+    url: jdbc:postgresql://localhost:5432/movk-backend?currentSchema=public&allowMultiQueries=true
+    username: postgres
+    password: devpass@123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+      initialization-fail-timeout: 0
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+    open-in-view: false
+
+# SSH隧道配置
+ssh:
+  enabled: false
+
+logPath: /root/movk-backend/logs
