@@ -11,11 +11,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
- * SSH隧道配置类
- * 用于建立SSH隧道连接到远程数据库
+ * SSH 隧道配置
+ * 使用统一的 forwards 列表来声明需要建立的端口转发
  */
 @Slf4j
 @Data
@@ -33,16 +35,20 @@ public class SshTunnelConfig {
     private String privateKeyPath;
     private String passphrase;
 
-    private Database database = new Database();
+    private List<Forward> forwards = new ArrayList<>();
+
     private Config config = new Config();
 
     private Session session;
+    private final List<Integer> forwardedLocalPorts = new ArrayList<>();
 
     @Data
-    public static class Database {
+    public static class Forward {
+        private String name;
+        private Boolean enabled = false;
         private String remoteHost = "localhost";
-        private int remotePort = 5432;
-        private int localPort = 5432;
+        private Integer remotePort;
+        private Integer localPort;
     }
 
     @Data
@@ -50,50 +56,26 @@ public class SshTunnelConfig {
         private String strictHostKeyChecking = "no";
         private int connectionTimeout = 30000;
         private int keepAliveInterval = 60000;
-        private int maxReconnectAttempts = 3;
-        private int reconnectDelay = 5000;
     }
 
-    /**
-     * 初始化SSH隧道
-     */
     @PostConstruct
     public void init() {
         if (!enabled) {
             log.info("SSH隧道已禁用");
             return;
         }
-
         try {
             establishSshTunnel();
         } catch (Exception e) {
-            log.error("建立SSH隧道失败", e);
-            // 尝试重连
-            for (int i = 1; i <= config.maxReconnectAttempts; i++) {
-                log.info("尝试重新连接SSH隧道，第{}次尝试", i);
-                try {
-                    Thread.sleep(config.reconnectDelay);
-                    establishSshTunnel();
-                    break;
-                } catch (Exception retryException) {
-                    log.error("第{}次重连失败", i, retryException);
-                    if (i == config.maxReconnectAttempts) {
-                        throw new RuntimeException("无法建立SSH隧道连接", retryException);
-                    }
-                }
-            }
+            throw new RuntimeException("无法建立SSH隧道连接", e);
         }
     }
 
-    /**
-     * 建立SSH隧道
-     */
     private void establishSshTunnel() throws Exception {
         JSch jsch = new JSch();
 
-        // 配置认证方式
+        // 认证
         if (privateKeyPath != null && !privateKeyPath.isEmpty()) {
-            // 使用私钥认证
             log.info("使用私钥认证: {}", privateKeyPath);
             if (passphrase != null && !passphrase.isEmpty()) {
                 jsch.addIdentity(privateKeyPath, passphrase);
@@ -102,21 +84,16 @@ public class SshTunnelConfig {
             }
         }
 
-        // 创建会话
         session = jsch.getSession(username, host, port);
-
-        // 如果使用密码认证
         if (password != null && !password.isEmpty()) {
             session.setPassword(password);
         }
 
-        // 配置会话属性
+        // 会话配置
         Properties sessionConfig = new Properties();
         sessionConfig.put("StrictHostKeyChecking", config.strictHostKeyChecking);
         sessionConfig.put("PreferredAuthentications", "publickey,password");
         session.setConfig(sessionConfig);
-
-        // 设置超时
         session.setServerAliveInterval(config.keepAliveInterval);
         session.setTimeout(config.connectionTimeout);
 
@@ -124,30 +101,38 @@ public class SshTunnelConfig {
         log.info("正在连接SSH服务器: {}:{}", host, port);
         session.connect(config.connectionTimeout);
 
-        // 设置端口转发
-        int assignedPort = session.setPortForwardingL(
-                database.localPort,
-                database.remoteHost,
-                database.remotePort
-        );
-
-        log.info("SSH隧道建立成功: localhost:{} -> {}:{} (通过 {}:{})",
-                assignedPort,
-                database.remoteHost,
-                database.remotePort,
-                host,
-                port
-        );
+        // 建立端口转发
+        if (forwards != null) {
+            for (Forward f : forwards) {
+                if (!Boolean.TRUE.equals(f.getEnabled())) {
+                    continue;
+                }
+                int local = (f.getLocalPort() != null) ? f.getLocalPort() : 15432;
+                int assignedPort = session.setPortForwardingL(local, f.getRemoteHost(), f.getRemotePort());
+                forwardedLocalPorts.add(assignedPort);
+                log.info("SSH隧道建立成功 [{}]: localhost:{} -> {}:{} (通过 {}:{})",
+                        f.getName(),
+                        assignedPort,
+                        f.getRemoteHost(),
+                        f.getRemotePort(),
+                        host,
+                        port
+                );
+            }
+        }
     }
 
-    /**
-     * 关闭SSH隧道
-     */
     @PreDestroy
     public void destroy() {
         if (session != null && session.isConnected()) {
             try {
-                session.delPortForwardingL(database.localPort);
+                for (Integer port : forwardedLocalPorts) {
+                    try {
+                        session.delPortForwardingL(port);
+                    } catch (Exception ignore) {
+                        // 忽略单条删除异常
+                    }
+                }
                 session.disconnect();
                 log.info("SSH隧道已关闭");
             } catch (Exception e) {
@@ -156,18 +141,7 @@ public class SshTunnelConfig {
         }
     }
 
-    /**
-     * 检查SSH隧道状态
-     */
     public boolean isConnected() {
         return session != null && session.isConnected();
-    }
-
-    /**
-     * 重新连接SSH隧道
-     */
-    public void reconnect() throws Exception {
-        destroy();
-        establishSshTunnel();
     }
 }

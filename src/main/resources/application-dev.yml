@@ -33,5 +33,24 @@ ssh:
   port: 22
   username: root
   privateKeyPath: /Users/yixuanmiao/.ssh/id_ed25519
+  forwards:
+    - name: postgres
+      enabled: true
+      remotePort: 5432
+      localPort: 5432
+    - name: mongodb
+      enabled: false
+      remotePort: 16379
+      localPort: 16379
+    - name: redis
+      enabled: false
+      remotePort: 17017
+      localPort: 17017
 
 logPath: logs
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
