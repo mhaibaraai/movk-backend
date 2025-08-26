@@ -20,6 +20,21 @@ spring:
           max-idle: 10
           min-idle: 1
 
+  flyway:
+    enabled: true
+    # 数据库迁移脚本位置
+    locations: classpath:db/migration
+    # 是否在迁移前验证脚本
+    validate-on-migrate: true
+    # 是否允许跳过顺序检查
+    out-of-order: false
+    # 是否禁用自动清理
+    clean-disabled: true
+    # 是否在迁移前创建基准版本
+    baseline-on-migrate: true
+    # 基准版本
+    baseline-version: 0
+
 server:
   port: 36600
   servlet:
