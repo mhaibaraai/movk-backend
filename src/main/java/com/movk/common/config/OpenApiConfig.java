@@ -1,4 +1,9 @@
-package com.movk.common.openapi;
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/26 22:18
+ */
+
+package com.movk.common.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

@@ -1,3 +1,8 @@
+<!--
+  ~ @Author yixuanmiao
+  ~ @Date 2025/08/26 22:21
+  -->
+
 <configuration scan="true" scanPeriod="60 seconds" packagingData="true">
 
     <!-- 变量优先级：Spring 属性 logPath > 环境变量 LOG_PATH > 默认 logs -->

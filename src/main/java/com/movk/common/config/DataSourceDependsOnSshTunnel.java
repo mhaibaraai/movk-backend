@@ -1,5 +1,9 @@
-package com.movk.base.config;
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/26 22:17
+ */
 
+package com.movk.common.config;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;

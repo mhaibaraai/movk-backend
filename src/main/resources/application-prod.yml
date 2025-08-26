@@ -31,9 +31,3 @@ ssh:
   enabled: false
 
 logPath: /root/projects/movk-backend/logs
-
-springdoc:
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: false
