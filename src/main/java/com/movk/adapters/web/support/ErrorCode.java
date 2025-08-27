@@ -3,7 +3,7 @@
  * @Date 2025/08/26 22:21
  */
 
-package com.movk.common.web;
+package com.movk.adapters.web.support;
 
 public enum ErrorCode {
     OK(0, "OK"),
@@ -29,5 +29,6 @@ public enum ErrorCode {
         return message;
     }
 }
+
 
 

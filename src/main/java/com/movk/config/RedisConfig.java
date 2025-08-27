@@ -3,7 +3,7 @@
  * @Date 2025/08/26 22:18
  */
 
-package com.movk.common.config;
+package com.movk.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,5 +25,7 @@ public class RedisConfig {
         return template;
     }
 }
+
+
 
 

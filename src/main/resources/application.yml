@@ -39,3 +39,8 @@ server:
   port: 36600
   servlet:
     context-path: /api
+
+security:
+  password:
+    encoder: bcrypt
+    strength: 10

@@ -3,7 +3,7 @@
  * @Date 2025/08/26 22:18
  */
 
-package com.movk.common.web;
+package com.movk.adapters.web.support;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,5 +44,6 @@ public class ApiResponse<T> {
                 .build();
     }
 }
+
 
 

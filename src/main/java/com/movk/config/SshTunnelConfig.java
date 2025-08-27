@@ -3,7 +3,7 @@
  * @Date 2025/08/26 22:18
  */
 
-package com.movk.common.config;
+package com.movk.config;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -150,3 +150,7 @@ public class SshTunnelConfig {
         return session != null && session.isConnected();
     }
 }
+
+
+
+

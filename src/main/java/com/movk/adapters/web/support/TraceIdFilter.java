@@ -3,7 +3,7 @@
  * @Date 2025/08/26 22:18
  */
 
-package com.movk.common.web;
+package com.movk.adapters.web.support;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -42,5 +42,6 @@ public class TraceIdFilter extends OncePerRequestFilter {
         }
     }
 }
+
 
 

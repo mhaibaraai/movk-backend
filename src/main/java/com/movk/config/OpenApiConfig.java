@@ -3,7 +3,7 @@
  * @Date 2025/08/26 22:18
  */
 
-package com.movk.common.config;
+package com.movk.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -50,5 +50,7 @@ public class OpenApiConfig {
                 .addSecurityItem(new SecurityRequirement().addList("bearer-jwt"));
     }
 }
+
+
 
 
