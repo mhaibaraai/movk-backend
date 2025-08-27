@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:43
+ */
+
 package com.movk.adapters.web.support;
 
 import jakarta.validation.ConstraintViolationException;
@@ -56,6 +61,3 @@ public class GlobalExceptionHandler {
         return ApiResponse.error(ErrorCode.INTERNAL_ERROR, ex.getMessage());
     }
 }
-
-
-

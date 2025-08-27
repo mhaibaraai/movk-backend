@@ -45,5 +45,9 @@ ssh:
       enabled: true
       remotePort: 16379
       localPort: 16379
+    - name: mongo
+      enabled: true
+      remotePort: 17017
+      localPort: 17017
 
 logPath: logs

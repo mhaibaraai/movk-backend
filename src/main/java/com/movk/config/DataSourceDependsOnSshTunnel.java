@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/26 22:17
+ * @Date 2025/08/27 21:44
  */
 
 package com.movk.config;
@@ -49,7 +49,3 @@ public class DataSourceDependsOnSshTunnel implements BeanFactoryPostProcessor {
         }
     }
 }
-
-
-
-

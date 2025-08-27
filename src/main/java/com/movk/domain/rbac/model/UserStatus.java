@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:45
+ */
+
 package com.movk.domain.rbac.model;
 
 /**
@@ -31,5 +36,3 @@ public enum UserStatus {
         throw new IllegalArgumentException("Unknown UserStatus code: " + code);
     }
 }
-
-

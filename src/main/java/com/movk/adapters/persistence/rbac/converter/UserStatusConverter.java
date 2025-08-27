@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:42
+ */
+
 package com.movk.adapters.persistence.rbac.converter;
 
 import com.movk.domain.rbac.model.UserStatus;
@@ -17,5 +22,3 @@ public class UserStatusConverter implements AttributeConverter<UserStatus, Short
         return UserStatus.fromCode(dbData);
     }
 }
-
-

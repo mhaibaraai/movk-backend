@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/26 22:18
+ * @Date 2025/08/27 21:42
  */
 
 package com.movk.adapters.web.support;
@@ -44,6 +44,3 @@ public class ApiResponse<T> {
                 .build();
     }
 }
-
-
-

@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:45
+ */
+
 -- Enable required extensions
 CREATE EXTENSION IF NOT EXISTS citext;
 
@@ -23,5 +28,3 @@ CREATE UNIQUE INDEX IF NOT EXISTS ux_sys_user_email ON sys_user (email);
 CREATE UNIQUE INDEX IF NOT EXISTS ux_sys_user_github_id ON sys_user (github_id) WHERE github_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS ix_sys_user_created_at ON sys_user (created_at);
 CREATE INDEX IF NOT EXISTS ix_sys_user_status ON sys_user (status);
-
-

@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:43
+ */
+
 package com.movk.application.security;
 
 import com.movk.config.security.SecurityPasswordProperties;
@@ -32,5 +37,3 @@ public class PasswordService {
         return raw + "{" + pepper + "}";
     }
 }
-
-

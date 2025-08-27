@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:42
+ */
+
 package com.movk.adapters.persistence.rbac.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -74,5 +79,3 @@ public class User {
     @Column(name = "display_name", columnDefinition = "citext")
     private String displayName;
 }
-
-

@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/26 22:18
+ * @Date 2025/08/27 21:42
  */
 
 package com.movk.config;
@@ -50,7 +50,3 @@ public class OpenApiConfig {
                 .addSecurityItem(new SecurityRequirement().addList("bearer-jwt"));
     }
 }
-
-
-
-

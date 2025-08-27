@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/27 21:43
+ */
+
 package com.movk.config.security;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -32,5 +37,3 @@ public class SecurityPasswordProperties {
         this.pepper = pepper;
     }
 }
-
-
