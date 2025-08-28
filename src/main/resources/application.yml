@@ -44,3 +44,7 @@ security:
   password:
     encoder: bcrypt
     strength: 10
+
+app:
+  cors:
+    allowed-origins: []

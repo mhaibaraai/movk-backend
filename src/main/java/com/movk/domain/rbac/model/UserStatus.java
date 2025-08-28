@@ -1,13 +1,16 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/27 21:45
+ * @Date 2025/08/28 10:28
  */
 
 package com.movk.domain.rbac.model;
 
+import lombok.Getter;
+
 /**
  * 用户状态
  */
+@Getter
 public enum UserStatus {
     ACTIVE((short) 1),
     DISABLED((short) 2),
@@ -18,10 +21,6 @@ public enum UserStatus {
 
     UserStatus(short code) {
         this.code = code;
-    }
-
-    public short getCode() {
-        return code;
     }
 
     public static UserStatus fromCode(Short code) {

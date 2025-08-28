@@ -34,3 +34,8 @@ ssh:
   enabled: false
 
 logPath: /root/projects/movk-backend/logs
+
+app:
+  cors:
+    allowed-origins:
+      - https://mhaibaraai.cn

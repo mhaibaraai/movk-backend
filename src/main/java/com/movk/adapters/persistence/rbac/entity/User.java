@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/27 21:42
+ * @Date 2025/08/28 10:29
  */
 
 package com.movk.adapters.persistence.rbac.entity;
@@ -48,14 +48,14 @@ public class User {
     @Column(nullable = false, length = 50, columnDefinition = "citext")
     private String username;
 
-    @Column(length = 255, columnDefinition = "citext")
+    @Column(columnDefinition = "citext")
     private String email;
 
     @Column(length = 30)
     private String phone;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String password;
 
     @Convert(converter = UserStatusConverter.class)

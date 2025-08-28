@@ -1,39 +1,22 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/27 21:43
+ * @Date 2025/08/28 10:35
  */
 
 package com.movk.config.security;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+@Getter
+@Setter
 @ConfigurationProperties("security.password")
 public class SecurityPasswordProperties {
+    // 支持的加密算法，当前仅支持 bcrypt
     private String encoder = "bcrypt";
+    // bcrypt 强度，默认10
     private Integer strength = 10;
+    // 全局 pepper，用于增强密码安全性
     private String pepper;
-
-    public String getEncoder() {
-        return encoder;
-    }
-
-    public void setEncoder(String encoder) {
-        this.encoder = encoder;
-    }
-
-    public Integer getStrength() {
-        return strength;
-    }
-
-    public void setStrength(Integer strength) {
-        this.strength = strength;
-    }
-
-    public String getPepper() {
-        return pepper;
-    }
-
-    public void setPepper(String pepper) {
-        this.pepper = pepper;
-    }
 }

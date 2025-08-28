@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/27 21:45
+ * @Date 2025/08/28 10:34
  */
 
 package com.movk.config;
@@ -76,6 +76,7 @@ public class SshTunnelConfig {
         }
     }
 
+    // 建立SSH隧道连接
     private void establishSshTunnel() throws Exception {
         JSch jsch = new JSch();
 
