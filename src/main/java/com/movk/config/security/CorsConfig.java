@@ -1,3 +1,8 @@
+/*
+ * @Author yixuanmiao
+ * @Date 2025/08/28 21:21
+ */
+
 package com.movk.config.security;
 
 import com.movk.adapters.web.support.TraceIdFilter;
@@ -18,16 +23,16 @@ import java.util.List;
 @EnableConfigurationProperties(CorsProperties.class)
 public class CorsConfig {
 
-    /**
-     * 配置CORS跨域请求
-     * @param properties 跨域配置属性
-     * @return 跨域配置源
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource(CorsProperties properties) {
+    private final CorsProperties corsProperties;
+
+    public CorsConfig(CorsProperties corsProperties) {
+        this.corsProperties = corsProperties;
+    }
+
+    private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(properties.getAllowedOrigins());
+        configuration.setAllowedOrigins(corsProperties.getAllowedOrigins());
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
         configuration.setExposedHeaders(List.of(TraceIdFilter.TRACE_ID_HEADER));
@@ -38,18 +43,11 @@ public class CorsConfig {
         return source;
     }
 
-    /**
-     * 注册CORS过滤器
-     * @param source 跨域配置源
-     * @return 过滤器注册Bean
-     */
     @Bean
-    public FilterRegistrationBean<CorsFilter> corsFilter(CorsConfigurationSource source) {
-        CorsFilter filter = new CorsFilter(source);
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        CorsFilter filter = new CorsFilter(corsConfigurationSource());
         FilterRegistrationBean<CorsFilter> bean = new FilterRegistrationBean<>(filter);
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
         return bean;
     }
 }
-
-

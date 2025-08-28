@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/28 11:21
+ * @Date 2025/08/28 21:23
  */
 
 package com.movk.adapters.web.support;
@@ -12,7 +12,6 @@ public enum ApiRCode {
 
     OK(0, "成功"),
 
-    //================== A: 客户端错误 (1xxxx) ==================
     // 基础类
     VALIDATION_FAILED(10001, "参数校验失败"),
     BAD_REQUEST(10002, "无效的请求"),
@@ -29,14 +28,12 @@ public enum ApiRCode {
     RESOURCE_CONFLICT(10202, "资源冲突（例如：尝试创建已存在的资源）"),
 
 
-    //================== B: 服务端错误 (2xxxx) ==================
     INTERNAL_ERROR(20001, "服务器内部错误，请联系管理员"),
     SERVICE_UNAVAILABLE(20002, "服务暂不可用，请稍后重试"),
     REMOTE_SERVICE_ERROR(20003, "远程服务调用异常"),
     DATABASE_ERROR(20004, "数据库操作异常"),
 
 
-    //================== C: 业务逻辑错误 (3xxxx) ==================
     BUSINESS_ERROR(30001, "业务执行出错"),
     USER_NOT_FOUND(30101, "用户不存在");
 

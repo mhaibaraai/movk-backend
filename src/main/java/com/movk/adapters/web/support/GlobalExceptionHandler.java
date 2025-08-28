@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/28
+ * @Date 2025/08/28 21:13
  */
 
 package com.movk.adapters.web.support;
@@ -54,7 +54,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<?>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpServletRequest req) {
-        log.warn("HttpMessageNotReadable: method={}, uri={}, reason={}", req.getMethod(), req.getRequestURI(), ex.getMostSpecificCause() != null ? ex.getMostSpecificCause().getMessage() : ex.getMessage());
+        ex.getMostSpecificCause();
+        log.warn("HttpMessageNotReadable: method={}, uri={}, reason={}", req.getMethod(), req.getRequestURI(), ex.getMostSpecificCause().getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(ApiRCode.BAD_REQUEST, null));
     }
 
@@ -108,7 +109,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ApiResponse<?>> handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest req) {
-        log.warn("NoHandlerFound: method={}, uri={}", req.getMethod(), req.getRequestURI());
+        log.warn("NoHandlerFound: method={}, uri={}", req.getMethod(), req.getRequestURI(), ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(ApiRCode.NOT_FOUND, null));
     }
 

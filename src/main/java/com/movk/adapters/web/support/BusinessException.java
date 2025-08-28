@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/28
+ * @Date 2025/08/28 20:54
  */
 
 package com.movk.adapters.web.support;
@@ -24,7 +24,7 @@ public class BusinessException extends RuntimeException {
     // example
     public static void main(String[] args) {
         try {
-            throw new BusinessException(ApiRCode.INTERNAL_ERROR, "服务器内部错误");
+            throw new BusinessException(ApiRCode.INTERNAL_ERROR);
         } catch (BusinessException e) {
             System.out.println("捕获到业务异常:");
             System.out.println("code: " + e.getCode().getCode());

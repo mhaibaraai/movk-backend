@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/27 21:45
+ * @Date 2025/08/28 21:48
  */
 
 -- 必需扩展（大小写不敏感 & 加密）
@@ -45,18 +45,6 @@ CREATE UNIQUE INDEX IF NOT EXISTS ux_sys_user_github_id ON sys_user (github_id) 
 CREATE INDEX IF NOT EXISTS ix_sys_user_created_at ON sys_user (created_at);
 CREATE INDEX IF NOT EXISTS ix_sys_user_status ON sys_user (status);
 
-/*
- * @Author yixuanmiao
- * @Date 2025/08/28 10:15
- */
-
--- ================================
--- 初始化默认用户
--- 默认初始密码：ChangeMe_123!
--- 使用 pgcrypto 的 bcrypt 加盐哈希（crypt + gen_salt('bf')）
--- status 统一设置为 1 (Active)
--- ON CONFLICT 避免重复执行产生错误
--- ================================
 INSERT INTO sys_user (id, username, display_name, email, phone, password, status, github_id)
 VALUES (gen_random_uuid(), 'Admin', 'Admin', NULL, NULL, crypt('ChangeMe_123!', gen_salt('bf')), 1, NULL)
 ON CONFLICT (username) DO NOTHING;
