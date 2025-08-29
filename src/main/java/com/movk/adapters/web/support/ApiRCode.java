@@ -23,6 +23,9 @@ public enum ApiRCode {
     FORBIDDEN(10102, "访问被拒绝，权限不足"),
     TOKEN_INVALID(10103, "无效的访问令牌"),
     TOKEN_EXPIRED(10104, "访问令牌已过期"),
+    INVALID_CREDENTIALS(10105, "邮箱或密码不正确"),
+    USER_DISABLED(10106, "用户账号已被禁用"),
+    INVALID_TOKEN(10107, "令牌无效或已过期"),
     // 其他客户端错误
     RATE_LIMIT_EXCEEDED(10201, "请求频率过高，请稍后再试"),
     RESOURCE_CONFLICT(10202, "资源冲突（例如：尝试创建已存在的资源）"),

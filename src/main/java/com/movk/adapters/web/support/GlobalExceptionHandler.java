@@ -12,8 +12,12 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -111,6 +115,58 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<?>> handleNoHandlerFound(NoHandlerFoundException ex, HttpServletRequest req) {
         log.warn("NoHandlerFound: method={}, uri={}", req.getMethod(), req.getRequestURI(), ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ApiResponse.error(ApiRCode.NOT_FOUND, null));
+    }
+
+    /**
+     * 处理Spring Security认证异常
+     */
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ApiResponse<?>> handleAuthentication(AuthenticationException ex, HttpServletRequest req) {
+        log.warn("AuthenticationException: method={}, uri={}, message={}", req.getMethod(), req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error(ApiRCode.UNAUTHORIZED, null));
+    }
+
+    /**
+     * 处理Spring Security授权异常
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<?>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest req) {
+        log.warn("AccessDeniedException: method={}, uri={}, message={}", req.getMethod(), req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiResponse.error(ApiRCode.FORBIDDEN, null));
+    }
+
+    /**
+     * 处理凭证错误异常
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiResponse<?>> handleBadCredentials(BadCredentialsException ex, HttpServletRequest req) {
+        log.warn("BadCredentialsException: method={}, uri={}, message={}", req.getMethod(), req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error(ApiRCode.INVALID_CREDENTIALS, null));
+    }
+
+    /**
+     * 处理方法参数校验异常
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ApiResponse<?>> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest req) {
+        log.warn("MethodArgumentNotValid: method={}, uri={}, errors={}", req.getMethod(), req.getRequestURI(), ex.getBindingResult().getAllErrors());
+        
+        // 获取第一个验证错误信息
+        String errorMessage = null;
+        if (!ex.getBindingResult().getAllErrors().isEmpty()) {
+            errorMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        }
+        
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(ApiRCode.VALIDATION_FAILED, errorMessage));
+    }
+
+    /**
+     * 处理参数绑定异常
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<?>> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest req) {
+        log.warn("IllegalArgumentException: method={}, uri={}, message={}", req.getMethod(), req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.error(ApiRCode.BAD_REQUEST, ex.getMessage()));
     }
 
     /**

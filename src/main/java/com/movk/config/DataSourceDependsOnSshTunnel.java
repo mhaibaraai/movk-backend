@@ -23,10 +23,7 @@ public class DataSourceDependsOnSshTunnel implements BeanFactoryPostProcessor {
     private static final List<String> TARGET_BEAN_NAMES = Arrays.asList(
             "dataSource",
             "entityManagerFactory",
-            "transactionManager",
-            "flyway",
-            "flywayInitializer",
-            "flywayMigrationInitializer"
+            "transactionManager"
     );
 
     @Override

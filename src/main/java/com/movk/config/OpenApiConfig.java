@@ -30,19 +30,8 @@ public class OpenApiConfig {
                 .scheme("bearer")
                 .bearerFormat("JWT");
 
-        SecurityScheme githubOAuth2 = new SecurityScheme()
-                .type(SecurityScheme.Type.OAUTH2)
-                .flows(new OAuthFlows().authorizationCode(new OAuthFlow()
-                        .authorizationUrl("https://github.com/login/oauth/authorize")
-                        .tokenUrl("https://github.com/login/oauth/access_token")
-                        .scopes(new Scopes()
-                                .addString("read:user", "Read GitHub user profile")
-                                .addString("user:email", "Read GitHub user email")
-                        )));
-
         Components components = new Components()
-                .addSecuritySchemes("bearer-jwt", bearerJwt)
-                .addSecuritySchemes("oauth2-github", githubOAuth2);
+                .addSecuritySchemes("bearer-jwt", bearerJwt);
 
         return new OpenAPI()
                 .info(info)

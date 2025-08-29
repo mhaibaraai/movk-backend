@@ -1,12 +1,11 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/28 21:21
+ * @Date 2025/08/29 14:11
  */
 
-package com.movk.config.security;
+package com.movk.config;
 
 import com.movk.adapters.web.support.TraceIdFilter;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,19 +19,12 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableConfigurationProperties(CorsProperties.class)
 public class CorsConfig {
-
-    private final CorsProperties corsProperties;
-
-    public CorsConfig(CorsProperties corsProperties) {
-        this.corsProperties = corsProperties;
-    }
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(corsProperties.getAllowedOrigins());
+        configuration.setAllowedOrigins(List.of("*")); // 允许所有来源
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
         configuration.setExposedHeaders(List.of(TraceIdFilter.TRACE_ID_HEADER));

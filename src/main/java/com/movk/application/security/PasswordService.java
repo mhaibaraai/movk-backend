@@ -5,20 +5,13 @@
 
 package com.movk.application.security;
 
-import com.movk.config.security.SecurityPasswordProperties;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PasswordService {
-    private final PasswordEncoder passwordEncoder;
-    private final SecurityPasswordProperties properties;
-
-    // 构造函数注入
-    public PasswordService(PasswordEncoder passwordEncoder, SecurityPasswordProperties properties) {
-        this.passwordEncoder = passwordEncoder;
-        this.properties = properties;
-    }
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
 
     // 对密码进行加盐哈希
     public String hash(String rawPassword) {
@@ -34,20 +27,14 @@ public class PasswordService {
 
     // 应用pepper
     private String applyPepper(String raw) {
-        String pepper = properties.getPepper();
-        if (pepper == null || pepper.isEmpty()) {
-            return raw;
-        }
+        String pepper = "movk-secret-pepper";
         return raw + "{" + pepper + "}";
     }
 
     // 使用示例
     public static void main(String[] args) {
-        SecurityPasswordProperties props = new SecurityPasswordProperties();
-        props.setPepper("mySecretPepper");
-        props.setStrength(10);
 
-        PasswordService service = new PasswordService(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder(props.getStrength()), props);
+        PasswordService service = new PasswordService();
 
         String password = "user123";
         String hashed = service.hash(password);

@@ -26,9 +26,6 @@ spring:
           batch_size: 20
     open-in-view: false
 
-  flyway:
-    schemas: public
-
 # SSH隧道配置
 ssh:
   enabled: true
@@ -51,9 +48,3 @@ ssh:
       localPort: 17017
 
 logPath: logs
-
-app:
-  cors:
-    allowed-origins:
-      - http://localhost:5173
-      - http://localhost:3000

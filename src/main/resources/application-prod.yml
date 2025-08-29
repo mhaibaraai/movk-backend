@@ -26,16 +26,8 @@ spring:
           batch_size: 20
     open-in-view: false
 
-  flyway:
-    schemas: public
-
 # SSH隧道配置
 ssh:
   enabled: false
 
 logPath: /root/projects/movk-backend/logs
-
-app:
-  cors:
-    allowed-origins:
-      - https://mhaibaraai.cn
