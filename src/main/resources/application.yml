@@ -29,3 +29,10 @@ server:
   port: 36600
   servlet:
     context-path: /api
+
+jwt:
+  secret: ${JWT_SECRET:dev-jwt-secret}
+  access-ttl: PT15M
+  issuer: movk-backend
+  header: Authorization
+  prefix: Bearer 
