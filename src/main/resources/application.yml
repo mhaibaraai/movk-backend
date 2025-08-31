@@ -30,9 +30,10 @@ server:
   servlet:
     context-path: /api
 
+# JWT 配置
 jwt:
-  secret: ${JWT_SECRET:dev-jwt-secret}
-  access-ttl: PT15M
-  issuer: movk-backend
-  header: Authorization
-  prefix: Bearer 
+  secret: ${JWT_SECRET:bW92ay1iYWNrZW5kLWp3dC1zZWNyZXQta2V5LWZvci1kZXZlbG9wbWVudC1lbnZpcm9ubWVudC0yMDI1}
+  expiration: ${JWT_EXPIRATION:86400}
+  header:
+    name: ${JWT_HEADER_NAME:X-Movk-Auth}
+    prefix: ${JWT_HEADER_PREFIX:Bearer }

@@ -1,7 +1,7 @@
 spring:
   # 数据源配置（通过SSH隧道）
   datasource:
-    url: jdbc:postgresql://localhost:5432/movk-backend?currentSchema=public&allowMultiQueries=true
+    url: jdbc:postgresql://localhost:15432/movk-backend?currentSchema=public&allowMultiQueries=true
     username: postgres
     password: devpass@123
     driver-class-name: org.postgresql.Driver
@@ -37,7 +37,7 @@ ssh:
     - name: postgres
       enabled: true
       remotePort: 5432
-      localPort: 5432
+      localPort: 15432
     - name: redis
       enabled: true
       remotePort: 16379

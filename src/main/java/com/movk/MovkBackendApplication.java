@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/28 09:34
+ * @Date 2025/08/31 16:35
  */
 
 package com.movk;
@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 public class MovkBackendApplication {
 
     public static void main(String[] args) {
