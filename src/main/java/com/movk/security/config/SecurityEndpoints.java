@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 16:35
+ * @Date 2025/09/01 22:54
  */
 
 package com.movk.security.config;
@@ -14,6 +14,8 @@ public final class SecurityEndpoints {
             "/auth/register",
             "/swagger-ui/**",
             "/v3/api-docs/**",
+            "/api/movk-backend/swagger-ui/**",
+            "/api/movk-backend/v3/api-docs/**",
             "/actuator/health",
             "/static/**",
             "/public/**"

@@ -1,3 +1,6 @@
+server:
+  port: 36600
+
 spring:
   # 数据源配置（通过SSH隧道）
   datasource:
@@ -26,6 +29,26 @@ spring:
           batch_size: 20
     open-in-view: false
 
+  data:
+    mongodb:
+      host: localhost
+      port: 17017
+      database: movk
+      username: root
+      password: devpass@123
+
+    redis:
+      host: localhost
+      port: 16379
+      password: devpass@123
+      database: 0
+      lettuce:
+        pool:
+          max-active: 100
+          max-wait: 5000ms
+          max-idle: 10
+          min-idle: 1
+
 # SSH隧道配置
 ssh:
   enabled: true
@@ -48,3 +71,11 @@ ssh:
       localPort: 17017
 
 logPath: logs
+
+# JWT 配置
+jwt:
+  secret: bW92ay1iYWNrZW5kLWp3dC1zZWNyZXQta2V5LWZvci1kZXZlbG9wbWVudC1lbnZpcm9ubWVudC0yMDI1
+  expiration: 21600
+  header:
+    name: X-Movk-Auth
+    prefix: Bearer 

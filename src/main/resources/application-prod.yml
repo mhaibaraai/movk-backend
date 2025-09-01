@@ -1,3 +1,7 @@
+server:
+  port: 36600
+  forward-headers-strategy: framework
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/movk-backend?currentSchema=public&allowMultiQueries=true
@@ -25,8 +29,42 @@ spring:
           batch_size: 20
     open-in-view: false
 
+  data:
+    mongodb:
+      host: localhost
+      port: 17017
+      database: movk
+      username: root
+      password: devpass@123
+
+    redis:
+      host: localhost
+      port: 16379
+      password: devpass@123
+      database: 0
+      lettuce:
+        pool:
+          max-active: 100
+          max-wait: 5000ms
+          max-idle: 10
+          min-idle: 1
+
 # SSH隧道配置
 ssh:
   enabled: false
 
 logPath: /root/projects/movk-backend/logs
+
+# JWT 配置
+jwt:
+  secret: R8AmzX5nQJ/yBv7cY9fLwE3gHkS6ZmU2sR4vJ0pDqZ7oF/tW8iGcYxV1N3bA5eK4+jL9mO8PcV2zB6kS/qA7rC==
+  expiration: 21600
+  header:
+    name: X-Movk-Auth
+    prefix: Bearer 
+
+springdoc:
+  swagger-ui:
+    config-url: /api/movk-backend/v3/api-docs/swagger-config
+    url: /api/movk-backend/v3/api-docs
+    oauth2-redirect-url: /api/movk-backend/swagger-ui/oauth2-redirect.html
