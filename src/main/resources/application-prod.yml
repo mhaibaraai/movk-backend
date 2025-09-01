@@ -1,5 +1,4 @@
 spring:
-  # 数据源配置（通过SSH隧道）
   datasource:
     url: jdbc:postgresql://localhost:5432/movk-backend?currentSchema=public&allowMultiQueries=true
     username: postgres

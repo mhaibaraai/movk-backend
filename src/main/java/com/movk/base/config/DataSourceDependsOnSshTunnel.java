@@ -7,6 +7,7 @@ package com.movk.base.config;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
@@ -15,8 +16,10 @@ import java.util.List;
 
 /**
  * 确保数据源与 JPA 相关 Bean 在 SSH 隧道建立之后再初始化
+ * 只在SSH隧道启用时生效
  */
 @Configuration
+@ConditionalOnProperty(name = "ssh.enabled", havingValue = "true")
 public class DataSourceDependsOnSshTunnel implements BeanFactoryPostProcessor {
 
     private static final String SSH_TUNNEL_BEAN_NAME = "sshTunnelConfig";

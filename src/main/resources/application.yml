@@ -28,7 +28,7 @@ spring:
 server:
   port: 36600
   servlet:
-    context-path: /api
+    context-path: /movk-backend
 
 # JWT 配置
 jwt:
