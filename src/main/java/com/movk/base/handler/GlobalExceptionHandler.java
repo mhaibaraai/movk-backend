@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/30 22:36
+ * @Date 2025/09/02 13:20
  */
 
 package com.movk.base.handler;
@@ -62,7 +62,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<R<?>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpServletRequest req) {
         ex.getMostSpecificCause();
-        log.warn("HttpMessageNotReadable: method={}, uri={}, reason={}", req.getMethod(), req.getRequestURI(), ex.getMostSpecificCause().getMessage());
+        String reason = ex.getMostSpecificCause().getMessage();
+        log.warn("HttpMessageNotReadable: method={}, uri={}, reason={}", req.getMethod(), req.getRequestURI(), reason);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(R.error(RCode.BAD_REQUEST, null));
     }
 

@@ -1,12 +1,11 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 16:35
+ * @Date 2025/09/02 13:18
  */
 
 package com.movk.security.filter;
 
 import com.movk.base.config.JwtHeaderProperties;
-import com.movk.security.config.SecurityEndpoints;
 import com.movk.security.model.LoginUser;
 import com.movk.security.service.JwtService;
 import com.movk.security.service.LoginUserDetailsService;
@@ -85,24 +84,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         return null;
-    }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        String path = request.getServletPath();
-        for (String pattern : SecurityEndpoints.PUBLIC_APIS) {
-            if (matches(pattern, path)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean matches(String pattern, String path) {
-        if (pattern.endsWith("/**")) {
-            String prefix = pattern.substring(0, pattern.length() - 3);
-            return path.startsWith(prefix);
-        }
-        return pattern.equals(path);
     }
 }

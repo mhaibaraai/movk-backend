@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 16:35
+ * @Date 2025/09/02 13:25
  */
 
 package com.movk.security.handler;
@@ -33,7 +33,7 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request,
                         HttpServletResponse response,
-                        AuthenticationException authException) throws IOException, ServletException {
+                        AuthenticationException authException) throws IOException {
 
         // 设置响应状态码和内容类型
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

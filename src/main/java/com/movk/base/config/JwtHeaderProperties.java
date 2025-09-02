@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 03:04
+ * @Date 2025/09/02 09:59
  */
 
 package com.movk.base.config;
@@ -16,6 +16,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "jwt.header")
 public class JwtHeaderProperties {
 
-    private String name = "X-Movk-Auth";
+    private String name = "Authorization";
     private String prefix = "Bearer ";
 }

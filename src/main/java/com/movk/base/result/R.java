@@ -1,10 +1,11 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 16:35
+ * @Date 2025/09/02 13:21
  */
 
 package com.movk.base.result;
 
+import com.movk.base.filter.TraceIdFilter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +32,7 @@ public class R<T> {
                 .code(RCode.OK.getCode())
                 .message(RCode.OK.getMessage())
                 .data(data)
-                .traceId(MDC.get("traceId"))
+                .traceId(MDC.get(TraceIdFilter.TRACE_ID_MDC_KEY))
                 .timestamp(System.currentTimeMillis())
                 .build();
     }
@@ -53,7 +54,7 @@ public class R<T> {
                 .code(errorCode.getCode())
                 .message(resolvedMessage)
                 .data(null)
-                .traceId(MDC.get("traceId"))
+                .traceId(MDC.get(TraceIdFilter.TRACE_ID_MDC_KEY))
                 .timestamp(System.currentTimeMillis())
                 .build();
     }

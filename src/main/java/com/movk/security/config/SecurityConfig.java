@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 01:54
+ * @Date 2025/09/02 13:17
  */
 
 package com.movk.security.config;
@@ -60,8 +60,8 @@ public class SecurityConfig {
             // 禁用 CSRF 保护（因为使用 JWT 无状态认证）
             .csrf(AbstractHttpConfigurer::disable)
             
-            // 禁用 CORS（如果需要，可以在 CorsConfig 中单独配置）
-            .cors(AbstractHttpConfigurer::disable)
+            // 启用 CORS（使用 CorsConfigurationSource Bean）
+            .cors(cors -> {})
             
             // 禁用默认的 Session 管理，使用无状态的 JWT 认证
             .sessionManagement(session -> 

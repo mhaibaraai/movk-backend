@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 01:56
+ * @Date 2025/09/02 13:24
  */
 
 package com.movk.security.handler;
@@ -33,7 +33,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request,
                       HttpServletResponse response,
-                      AccessDeniedException accessDeniedException) throws IOException, ServletException {
+                      AccessDeniedException accessDeniedException) throws IOException {
 
         // 设置响应状态码和内容类型
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

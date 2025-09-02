@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 01:58
+ * @Date 2025/09/02 13:18
  */
 
 package com.movk.security.service;
@@ -20,12 +20,14 @@ public class TokenService {
 
     public AuthTokensDTO generateTokens(LoginUser loginUser) {
         String accessToken = jwtService.generateToken(loginUser);
-        long expiresIn = jwtService.getExpirationDateFromToken(accessToken).getTime() / 1000;
+        long expirationMillis = jwtService.getExpirationDateFromToken(accessToken).getTime();
+        long nowMillis = System.currentTimeMillis();
+        long remainingSeconds = Math.max(0L, (expirationMillis - nowMillis) / 1000L);
 
         return AuthTokensDTO.builder()
                 .accessToken(accessToken)
                 .tokenType("Bearer")
-                .expiresIn(expiresIn)
+                .expiresIn(remainingSeconds)
                 .build();
     }
 

@@ -1,6 +1,6 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/31 16:35
+ * @Date 2025/09/01 14:14
  */
 
 package com.movk.base.config;
@@ -29,7 +29,7 @@ public class OpenApiConfig {
                 .version("v1");
 
         // 定义自定义 JWT 安全方案
-        final String securitySchemeName = "x-movk-auth";
+        final String securitySchemeName = "Authorization";
         SecurityScheme auth = new SecurityScheme()
                 .type(SecurityScheme.Type.APIKEY)
                 .in(SecurityScheme.In.HEADER)

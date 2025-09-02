@@ -60,8 +60,8 @@ jwt:
   secret: R8AmzX5nQJ/yBv7cY9fLwE3gHkS6ZmU2sR4vJ0pDqZ7oF/tW8iGcYxV1N3bA5eK4+jL9mO8PcV2zB6kS/qA7rC==
   expiration: 21600
   header:
-    name: X-Movk-Auth
-    prefix: Bearer 
+    name: Authorization
+    prefix: "Bearer "
 
 springdoc:
   swagger-ui:

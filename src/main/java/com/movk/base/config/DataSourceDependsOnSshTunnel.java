@@ -1,9 +1,10 @@
 /*
  * @Author yixuanmiao
- * @Date 2025/08/30 22:21
+ * @Date 2025/09/02 13:25
  */
 
 package com.movk.base.config;
+import lombok.NonNull;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
