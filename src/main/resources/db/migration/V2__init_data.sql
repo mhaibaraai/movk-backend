@@ -30,12 +30,15 @@ VALUES
 -- =============================================
 -- 3. 初始化用户数据
 -- =============================================
--- 密码均为：Admin@123（BCrypt 加密，strength=10）
+-- 用户密码说明：
+--   admin: Admin@2025#Secure（超级管理员密码）
+--   user:  User@2025#Normal（普通用户密码）
+--   test:  Test@2025#Debug（测试用户密码）
 INSERT INTO sys_user (id, username, password, nickname, email, phone, gender, status, dept_id, creator, created_at, updated_at, deleted)
 VALUES
-    ('00000000-0000-0000-0000-000000000201', 'admin', '$2a$10$YJDXekyXEzN3Dj8K8Ry3V.jYwF8H8cPp5eZJc4wZqKZ8nRJ5X7zJy', '超级管理员', 'admin@movk.com', '13800000000', 1, 1, '00000000-0000-0000-0000-000000000001', NULL, NOW(), NOW(), FALSE),
-    ('00000000-0000-0000-0000-000000000202', 'user', '$2a$10$YJDXekyXEzN3Dj8K8Ry3V.jYwF8H8cPp5eZJc4wZqKZ8nRJ5X7zJy', '普通用户', 'user@movk.com', '13800000001', 1, 1, '00000000-0000-0000-0000-000000000002', NULL, NOW(), NOW(), FALSE),
-    ('00000000-0000-0000-0000-000000000203', 'test', '$2a$10$YJDXekyXEzN3Dj8K8Ry3V.jYwF8H8cPp5eZJc4wZqKZ8nRJ5X7zJy', '测试用户', 'test@movk.com', '13800000002', 2, 1, '00000000-0000-0000-0000-000000000005', NULL, NOW(), NOW(), FALSE);
+    ('00000000-0000-0000-0000-000000000201', 'admin', '$2a$10$gWkmut80IIjBmTMAZ2S36ejCXyigLOPOTDlCmx4tOBuaxEJJmfvq6', '超级管理员', 'admin@movk.com', '13800000000', 1, 1, '00000000-0000-0000-0000-000000000001', NULL, NOW(), NOW(), FALSE),
+    ('00000000-0000-0000-0000-000000000202', 'user', '$2a$10$Pzv3n4qqhCeVCXdyeFhP3.W0pTtLxQUoRkxevHlJ.OwptNSVIbG/G', '普通用户', 'user@movk.com', '13800000001', 1, 1, '00000000-0000-0000-0000-000000000002', NULL, NOW(), NOW(), FALSE),
+    ('00000000-0000-0000-0000-000000000203', 'test', '$2a$10$PC1LkgXtENloa7i7NCsBeetYxqddcj52EZ8IR9jkQxC5Kja8oowFW', '测试用户', 'test@movk.com', '13800000002', 2, 1, '00000000-0000-0000-0000-000000000005', NULL, NOW(), NOW(), FALSE);
 
 -- =============================================
 -- 4. 初始化角色数据
