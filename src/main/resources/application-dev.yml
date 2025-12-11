@@ -1,11 +1,11 @@
 server:
-  port: ${SERVER_PORT}
+  port: ${SERVER_PORT:36600}
 
 spring:
   # 数据源配置（通过SSH隧道）
   datasource:
-    url: jdbc:postgresql://localhost:${DB_LOCAL_PORT}/movk-backend?currentSchema=public&allowMultiQueries=true
-    username: ${DB_USERNAME}
+    url: jdbc:postgresql://localhost:${DB_LOCAL_PORT:15432}/movk-backend?currentSchema=public&allowMultiQueries=true
+    username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
     hikari:
@@ -42,7 +42,7 @@ spring:
   data:
     redis:
       host: localhost
-      port: ${REDIS_LOCAL_PORT}
+      port: ${REDIS_LOCAL_PORT:16379}
       password: ${REDIS_PASSWORD}
       database: 0
       lettuce:
@@ -56,25 +56,25 @@ spring:
 ssh:
   enabled: true
   host: ${SSH_HOST}
-  port: ${SSH_PORT}
+  port: ${SSH_PORT:22}
   username: ${SSH_USERNAME}
   password: ${SSH_PASSWORD}
   forwards:
     - name: postgres
       enabled: true
       remotePort: 5432
-      localPort: ${DB_LOCAL_PORT}
+      localPort: ${DB_LOCAL_PORT:15432}
     - name: redis
       enabled: true
       remotePort: 6379
-      localPort: ${REDIS_LOCAL_PORT}
+      localPort: ${REDIS_LOCAL_PORT:16379}
 
 logPath: logs
 
 # JWT 配置
 jwt:
   secret: ${JWT_SECRET}
-  expiration: ${JWT_EXPIRATION}
+  expiration: ${JWT_EXPIRATION:21600}
   header:
     name: Authorization
     prefix: "Bearer "
