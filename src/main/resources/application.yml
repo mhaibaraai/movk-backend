@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: movk-backend
+
+  # 默认激活开发环境，可通过启动参数覆盖
+  # 使用: --spring.profiles.active=prod 切换到生产环境
+  profiles:
+    active: dev
+
+  # Jackson 日期时间格式配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+server:
+  servlet:
+    context-path: /movk-backend

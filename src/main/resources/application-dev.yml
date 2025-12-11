@@ -1,0 +1,80 @@
+server:
+  port: ${SERVER_PORT}
+
+spring:
+  # 数据源配置（通过SSH隧道）
+  datasource:
+    url: jdbc:postgresql://localhost:${DB_LOCAL_PORT}/movk-backend?currentSchema=public&allowMultiQueries=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+      initialization-fail-timeout: 0
+
+  # JPA配置
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+    open-in-view: false
+
+  # Flyway 数据库迁移配置
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+    table: flyway_schema_history
+    validate-on-migrate: false
+    clean-disabled: false
+
+  data:
+    redis:
+      host: localhost
+      port: ${REDIS_LOCAL_PORT}
+      password: ${REDIS_PASSWORD}
+      database: 0
+      lettuce:
+        pool:
+          max-active: 100
+          max-wait: 5000ms
+          max-idle: 10
+          min-idle: 1
+
+# SSH隧道配置
+ssh:
+  enabled: true
+  host: ${SSH_HOST}
+  port: ${SSH_PORT}
+  username: ${SSH_USERNAME}
+  password: ${SSH_PASSWORD}
+  forwards:
+    - name: postgres
+      enabled: true
+      remotePort: 5432
+      localPort: ${DB_LOCAL_PORT}
+    - name: redis
+      enabled: true
+      remotePort: 6379
+      localPort: ${REDIS_LOCAL_PORT}
+
+logPath: logs
+
+# JWT 配置
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: ${JWT_EXPIRATION}
+  header:
+    name: Authorization
+    prefix: "Bearer "
