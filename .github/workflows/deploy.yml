@@ -48,10 +48,10 @@ jobs:
         with:
           host: ${{ secrets.PROD_SSH_HOST }}
           username: ${{ secrets.PROD_SSH_USER }}
-          key: ${{ secrets.PROD_SSH_KEY }}
+          password: ${{ secrets.PROD_SSH_PASSWORD }}
           port: ${{ vars.PROD_SSH_PORT || 22 }}
           script: |
             cd ~/apps/movk-backend
-            docker compose pull
-            docker compose up -d
+            docker compose -f docker-compose.app.yml pull
+            docker compose -f docker-compose.app.yml up -d
             docker image prune -f

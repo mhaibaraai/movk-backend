@@ -56,6 +56,9 @@ JWT_SECRET=xxx（至少64字符）
 SSH_HOST=xxx
 SSH_USERNAME=xxx
 SSH_PASSWORD=xxx
+
+# CORS 跨域配置（多个域名用逗号分隔）
+CORS_ALLOWED_ORIGINS=xxx
 ```
 
 ### 启动
@@ -102,8 +105,9 @@ API 文档：http://localhost:36600/movk-backend/swagger-ui.html
 
 推送到 `main` 分支自动构建镜像到 GHCR，配置以下 secrets 启用自动部署：
 
-| 类型 | 名称 | 说明 |
-|------|------|------|
-| Secret | `PROD_SSH_HOST` | 服务器 IP |
+| 类型 | 名称 | 说明      |
+|------|------|---------|
+| Secret | `PROD_SSH_HOST` | 服务器 IP  |
 | Secret | `PROD_SSH_USER` | SSH 用户名 |
-| Secret | `PROD_SSH_KEY` | SSH 私钥 |
+| Secret | `PROD_SSH_PASSWORD` | SSH 登录密码  |
+| Secret | `PROD_SSH_PORT` | SSH 端口（可选，默认 22） |
