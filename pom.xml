@@ -15,7 +15,7 @@
     </parent>
     <groupId>com.movk</groupId>
     <artifactId>movk-backend</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>movk-backend</name>
     <description>movk-backend</description>
     <dependencies>
