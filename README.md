@@ -99,7 +99,7 @@ API 文档：http://localhost:36600/movk-backend/swagger-ui.html
 ### 部署文件
 
 - `Dockerfile` - 镜像构建
-- `deploy/server/docker-compose.app.yml` - 容器编排
+- `deploy/server/docker-compose.yml` - 容器编排
 
 ### GitHub Actions
 
@@ -111,3 +111,31 @@ API 文档：http://localhost:36600/movk-backend/swagger-ui.html
 | Secret | `PROD_SSH_USER` | SSH 用户名 |
 | Secret | `PROD_SSH_PASSWORD` | SSH 登录密码  |
 | Secret | `PROD_SSH_PORT` | SSH 端口（可选，默认 22） |
+
+### 服务器配置
+
+在服务器 `~/apps/movk-backend` 目录创建 `.env` 文件：
+
+```bash
+# 数据库配置
+DB_PASSWORD=your_db_password
+REDIS_PASSWORD=your_redis_password
+
+# JWT 密钥（至少 64 字符）
+JWT_SECRET=your_jwt_secret
+
+# CORS 跨域配置（多个域名用逗号分隔）
+CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
+```
+
+**说明**：
+- `CORS_ALLOWED_ORIGINS` 控制允许访问 API 的前端域名
+- 开发环境默认允许所有来源（`*`）
+- 生产环境必须明确指定域名，多个域名用逗号分隔
+- Apifox 等 API 测试工具不受 CORS 限制，无需添加
+
+## 日志管理
+
+日志会自动滚动和清理（配置在 `logback-spring.xml`）：
+- 开发环境：保留 7 天，总大小限制 2GB
+- 生产环境：保留 30 天，总大小限制 10GB
