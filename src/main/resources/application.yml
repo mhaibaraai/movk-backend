@@ -2,10 +2,10 @@ spring:
   application:
     name: movk-backend
 
-  # 默认激活开发环境，可通过启动参数覆盖
-  # 使用: --spring.profiles.active=prod 切换到生产环境
+  # 默认使用开发环境；生产环境请通过环境变量/启动参数覆盖
+  # 例如：SPRING_PROFILES_ACTIVE=prod 或 --spring.profiles.active=prod
   profiles:
-    active: dev
+    default: dev
 
   # Jackson 日期时间格式配置
   jackson:
