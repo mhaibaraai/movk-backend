@@ -8,7 +8,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/movk-backend?currentSchema=public&allowMultiQueries=true
+    url: jdbc:postgresql://host.docker.internal:5432/movk-backend?currentSchema=public&allowMultiQueries=true
     username: postgres
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -43,7 +43,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: host.docker.internal
       port: 6379
       password: ${REDIS_PASSWORD}
       database: 0
