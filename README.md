@@ -114,15 +114,6 @@ API 文档：http://localhost:36600/movk-backend/swagger-ui.html
 
 ### 服务器配置
 
-#### 前置要求
-
-服务器需要预先安装并运行:
-- PostgreSQL 数据库（监听 5432 端口）
-- Redis（监听 6379 端口）
-- Docker 和 Docker Compose
-
-#### 环境变量配置
-
 在服务器 `~/apps/movk-backend` 目录创建 `.env` 文件：
 
 ```bash
@@ -136,18 +127,6 @@ JWT_SECRET=your_jwt_secret
 # CORS 跨域配置（多个域名用逗号分隔）
 CORS_ALLOWED_ORIGINS=https://your-frontend-domain.com
 ```
-
-**说明**：
-- `CORS_ALLOWED_ORIGINS` 控制允许访问 API 的前端域名
-- 开发环境默认允许所有来源（`*`）
-- 生产环境必须明确指定域名，多个域名用逗号分隔
-- Apifox 等 API 测试工具不受 CORS 限制，无需添加
-
-#### 网络架构
-
-应用容器通过 `host.docker.internal` 访问宿主机上的 PostgreSQL 和 Redis 服务，确保:
-- PostgreSQL 允许 Docker 网络访问（配置 `pg_hba.conf`）
-- Redis 绑定到 `0.0.0.0` 或允许 Docker 网络访问
 
 ## 日志管理
 

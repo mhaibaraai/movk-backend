@@ -13,10 +13,9 @@ services:
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS}
     volumes:
       - ./logs:/home/ubuntu/apps/movk-backend/logs
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - webnet
+      - database_default
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:36600/movk-backend/actuator/health"]
       interval: 30s
@@ -26,4 +25,6 @@ services:
 
 networks:
   webnet:
+    external: true
+  database_default:
     external: true
