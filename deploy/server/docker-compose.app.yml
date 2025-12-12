@@ -1,0 +1,24 @@
+services:
+  movk-backend:
+    image: ghcr.io/yixuanmiao/movk-backend:latest
+    container_name: movk-backend
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_PASSWORD=${DB_PASSWORD}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+    volumes:
+      - ./logs:/home/ubuntu/apps/movk-backend/logs
+    networks:
+      - webnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:36600/movk-backend/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  webnet:
+    external: true

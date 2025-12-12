@@ -1,0 +1,17 @@
+# Maven / build outputs
+target/
+
+# VCS / IDE
+.git/
+.idea/
+*.iml
+
+# Local runtime
+logs/
+
+# Env files (keep example)
+.env*
+!.env.example
+
+# Docs (not needed for container build context)
+docs/
