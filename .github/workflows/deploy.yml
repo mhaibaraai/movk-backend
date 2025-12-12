@@ -52,6 +52,6 @@ jobs:
           port: ${{ vars.PROD_SSH_PORT || 22 }}
           script: |
             cd ~/apps/movk-backend
-            docker compose -f docker-compose.app.yml pull
-            docker compose -f docker-compose.app.yml up -d
+            docker compose -f docker-compose.yml pull
+            docker compose -f docker-compose.yml up -d
             docker image prune -f
