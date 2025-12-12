@@ -12,7 +12,11 @@ import com.movk.security.annotation.RequiresPermission;
 import com.movk.security.model.LoginUser;
 import com.movk.security.service.CurrentUserService;
 import com.movk.service.MenuService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +29,11 @@ import static com.movk.common.enums.OperationType.*;
 /**
  * 菜单管理 Controller
  */
+@Tag(name = "菜单管理", description = "菜单相关接口")
 @RestController
 @RequestMapping("/api/system/menu")
 @RequiredArgsConstructor
+@Validated
 public class MenuController {
 
     private final MenuService menuService;
@@ -66,7 +72,7 @@ public class MenuController {
     @PostMapping
     @RequiresPermission("system:menu:add")
     @Log(module = "菜单管理", operation = CREATE)
-    public R<UUID> createMenu(@RequestBody MenuCreateReq req) {
+    public R<UUID> createMenu(@Valid @RequestBody MenuCreateReq req) {
         return R.success(menuService.createMenu(req));
     }
 
@@ -76,7 +82,7 @@ public class MenuController {
     @PutMapping
     @RequiresPermission("system:menu:edit")
     @Log(module = "菜单管理", operation = UPDATE)
-    public R<Void> updateMenu(@RequestBody MenuUpdateReq req) {
+    public R<Void> updateMenu(@Valid @RequestBody MenuUpdateReq req) {
         menuService.updateMenu(req);
         return R.ok();
     }
@@ -94,9 +100,9 @@ public class MenuController {
 
     /**
      * 获取当前用户的路由菜单树（前端路由用）
-     * 不需要权限注解，登录用户即可访问
      */
     @GetMapping("/user/routes")
+    @PreAuthorize("isAuthenticated()")
     public R<List<MenuTreeResp>> getUserRoutes() {
         LoginUser loginUser = currentUserService.getCurrentUser();
         return R.success(menuService.getUserMenuTree(loginUser.getId()));
@@ -104,9 +110,9 @@ public class MenuController {
 
     /**
      * 获取当前用户的权限标识列表
-     * 不需要权限注解，登录用户即可访问
      */
     @GetMapping("/user/permissions")
+    @PreAuthorize("isAuthenticated()")
     public R<List<String>> getUserPermissions() {
         LoginUser loginUser = currentUserService.getCurrentUser();
         return R.success(menuService.getUserPermissions(loginUser.getId()));
@@ -114,9 +120,9 @@ public class MenuController {
 
     /**
      * 获取当前用户的按钮权限集合
-     * 不需要权限注解，登录用户即可访问
      */
     @GetMapping("/user/buttons")
+    @PreAuthorize("isAuthenticated()")
     public R<Set<String>> getUserButtonPermissions() {
         LoginUser loginUser = currentUserService.getCurrentUser();
         return R.success(menuService.getUserButtonPermissions(loginUser.getId()));
@@ -124,9 +130,9 @@ public class MenuController {
 
     /**
      * 获取当前用户的按钮权限（按菜单分组）
-     * 不需要权限注解，登录用户即可访问
      */
     @GetMapping("/user/buttons-by-menu")
+    @PreAuthorize("isAuthenticated()")
     public R<Map<UUID, Set<String>>> getUserButtonPermissionsByMenu() {
         LoginUser loginUser = currentUserService.getCurrentUser();
         return R.success(menuService.getUserButtonPermissionsByMenu(loginUser.getId()));

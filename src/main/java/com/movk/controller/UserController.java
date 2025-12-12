@@ -14,6 +14,7 @@ import com.movk.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -101,7 +102,7 @@ public class UserController {
     @DeleteMapping("/batch")
     @RequiresPermission("system:user:delete")
     @Log(module = "用户管理", operation = DELETE)
-    public R<Void> deleteUsers(@RequestBody List<UUID> ids) {
+    public R<Void> deleteUsers(@RequestBody @NotEmpty(message = "用户ID列表不能为空") List<UUID> ids) {
         userService.deleteUsers(ids);
         return R.ok();
     }
@@ -124,7 +125,7 @@ public class UserController {
     @PostMapping("/{userId}/assign-posts")
     @RequiresPermission("system:user:edit")
     @Log(module = "用户管理", operation = UPDATE)
-    public R<Void> assignPosts(@PathVariable UUID userId, @RequestBody List<UUID> postIds) {
+    public R<Void> assignPosts(@PathVariable UUID userId, @RequestBody @NotEmpty(message = "岗位ID列表不能为空") List<UUID> postIds) {
         userService.assignPosts(userId, postIds);
         return R.ok();
     }

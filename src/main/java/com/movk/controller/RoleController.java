@@ -10,11 +10,15 @@ import com.movk.dto.role.*;
 import com.movk.security.annotation.Log;
 import com.movk.security.annotation.RequiresPermission;
 import com.movk.service.RoleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +29,11 @@ import static com.movk.common.enums.OperationType.*;
 /**
  * 角色管理 Controller
  */
+@Tag(name = "角色管理", description = "角色相关接口")
 @RestController
 @RequestMapping("/api/system/role")
 @RequiredArgsConstructor
+@Validated
 public class RoleController {
 
     private final RoleService roleService;
@@ -59,7 +65,7 @@ public class RoleController {
     @PostMapping
     @RequiresPermission("system:role:add")
     @Log(module = "角色管理", operation = CREATE)
-    public R<UUID> createRole(@RequestBody RoleCreateReq req) {
+    public R<UUID> createRole(@Valid @RequestBody RoleCreateReq req) {
         return R.success(roleService.createRole(req));
     }
 
@@ -69,7 +75,7 @@ public class RoleController {
     @PutMapping
     @RequiresPermission("system:role:edit")
     @Log(module = "角色管理", operation = UPDATE)
-    public R<Void> updateRole(@RequestBody RoleUpdateReq req) {
+    public R<Void> updateRole(@Valid @RequestBody RoleUpdateReq req) {
         roleService.updateRole(req);
         return R.ok();
     }
@@ -91,7 +97,7 @@ public class RoleController {
     @DeleteMapping("/batch")
     @RequiresPermission("system:role:delete")
     @Log(module = "角色管理", operation = DELETE)
-    public R<Void> deleteRoles(@RequestBody List<UUID> ids) {
+    public R<Void> deleteRoles(@RequestBody @NotEmpty(message = "角色ID列表不能为空") List<UUID> ids) {
         roleService.deleteRoles(ids);
         return R.ok();
     }
@@ -102,7 +108,7 @@ public class RoleController {
     @PostMapping("/assign-menus")
     @RequiresPermission("system:role:edit")
     @Log(module = "角色管理", operation = UPDATE)
-    public R<Void> assignMenus(@RequestBody AssignMenuReq req) {
+    public R<Void> assignMenus(@Valid @RequestBody AssignMenuReq req) {
         roleService.assignMenus(req);
         return R.ok();
     }
