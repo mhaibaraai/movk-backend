@@ -304,11 +304,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void assignRoles(AssignRoleReq req) {
-        assignRoles(req.userId(), req.roleIds());
-    }
-
-    private void assignRoles(UUID userId, Iterable<UUID> roleIds) {
+    public void assignRoles(UUID userId, Iterable<UUID> roleIds) {
         if (!userRepository.existsById(userId)) {
             throw new BusinessException(RCode.NOT_FOUND, "用户不存在");
         }

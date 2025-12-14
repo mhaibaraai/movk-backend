@@ -251,11 +251,7 @@ public class RoleServiceImpl implements RoleService {
         @CacheEvict(value = CacheConfig.USER_PERMISSIONS, allEntries = true),
         @CacheEvict(value = CacheConfig.USER_MENUS, allEntries = true)
     })
-    public void assignMenus(AssignMenuReq req) {
-        assignMenus(req.roleId(), req.menuIds());
-    }
-
-    private void assignMenus(UUID roleId, Iterable<UUID> menuIds) {
+    public void assignMenus(UUID roleId, Iterable<UUID> menuIds) {
         if (!roleRepository.existsById(roleId)) {
             throw new BusinessException(RCode.NOT_FOUND, "角色不存在");
         }

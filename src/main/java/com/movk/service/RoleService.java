@@ -54,7 +54,7 @@ public interface RoleService {
     /**
      * 分配角色菜单
      */
-    void assignMenus(AssignMenuReq req);
+    void assignMenus(UUID roleId, Iterable<UUID> menuIds);
 
     /**
      * 检查角色编码是否存在

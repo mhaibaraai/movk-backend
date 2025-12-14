@@ -54,7 +54,7 @@ public interface UserService {
     /**
      * 分配用户角色
      */
-    void assignRoles(AssignRoleReq req);
+    void assignRoles(UUID userId, Iterable<UUID> roleIds);
 
     /**
      * 分配用户岗位

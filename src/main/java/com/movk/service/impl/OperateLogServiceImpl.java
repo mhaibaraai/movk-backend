@@ -41,8 +41,9 @@ public class OperateLogServiceImpl implements OperateLogService {
     public void saveLogAsync(OperateLog operateLog) {
         try {
             operateLogRepository.save(operateLog);
-            log.debug("操作日志保存成功 - traceId: {}, module: {}, operation: {}",
-                operateLog.getTraceId(), operateLog.getModule(), operateLog.getOperation());
+            log.info("操作日志保存成功 - traceId: {}, userId: {}, username: {}, module: {}, operation: {}, url: {}",
+                operateLog.getTraceId(), operateLog.getUserId(), operateLog.getUsername(),
+                operateLog.getModule(), operateLog.getOperation(), operateLog.getRequestUrl());
         } catch (Exception e) {
             log.error("操作日志保存失败 - traceId: {}, error: {}",
                 operateLog.getTraceId(), e.getMessage(), e);
