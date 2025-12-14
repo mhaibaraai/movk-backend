@@ -34,7 +34,7 @@ public class OnlineUser {
     @Column(nullable = false, updatable = false)
     private UUID id;
 
-    @Column(name = "session_id", nullable = false, unique = true, length = 100)
+    @Column(name = "session_id", nullable = false, unique = true, length = 500)
     private String sessionId;
 
     @Column(name = "user_id", nullable = false)

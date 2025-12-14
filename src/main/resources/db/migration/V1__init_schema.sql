@@ -296,7 +296,7 @@ CREATE INDEX idx_login_log_created_at ON sys_login_log(created_at);
 -- =============================================
 CREATE TABLE sys_online_user (
     id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    session_id          VARCHAR(100) NOT NULL UNIQUE,
+    session_id          VARCHAR(500) NOT NULL UNIQUE,
     user_id             UUID NOT NULL,
     username            VARCHAR(50) NOT NULL,
     dept_id             UUID,
@@ -312,7 +312,7 @@ CREATE TABLE sys_online_user (
 );
 
 COMMENT ON TABLE sys_online_user IS '在线用户表';
-COMMENT ON COLUMN sys_online_user.session_id IS '会话ID（JWT Token ID）';
+COMMENT ON COLUMN sys_online_user.session_id IS '会话ID（JWT Token，完整令牌）';
 
 CREATE INDEX idx_online_user_user_id ON sys_online_user(user_id);
 CREATE INDEX idx_online_user_expire_time ON sys_online_user(expire_time);
