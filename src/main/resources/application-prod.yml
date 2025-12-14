@@ -54,6 +54,13 @@ spring:
           max-idle: 10
           min-idle: 1
 
+  # 文件上传限制
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 100MB
+
 ssh:
   enabled: false
 
@@ -98,14 +105,6 @@ file:
     - json
     - xml
     - csv
-
-# Spring 文件上传限制
-spring:
-  servlet:
-    multipart:
-      enabled: true
-      max-file-size: 50MB
-      max-request-size: 100MB
 
 cors:
   allowed-origins: ${CORS_ALLOWED_ORIGINS}

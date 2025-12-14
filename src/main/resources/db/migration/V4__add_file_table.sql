@@ -42,21 +42,15 @@ CREATE INDEX idx_file_md5 ON sys_file(md5) WHERE NOT deleted;
 CREATE INDEX idx_file_category ON sys_file(category) WHERE NOT deleted;
 CREATE INDEX idx_file_created_at ON sys_file(created_at DESC) WHERE NOT deleted;
 
--- 插入文件管理相关菜单
-INSERT INTO sys_menu (id, parent_id, menu_name, menu_type, path, component, perms, icon, order_num, visible, status, cache_flag) VALUES
-    (gen_random_uuid(), (SELECT id FROM sys_menu WHERE menu_name = '系统管理' AND deleted = FALSE LIMIT 1), '文件管理', 'C', 'file', 'system/file/index', 'system:file:list', 'upload', 10, TRUE, 1, FALSE);
+-- 插入文件管理相关菜单（二级菜单）
+INSERT INTO sys_menu (id, parent_id, menu_name, menu_type, order_num, path, component, permission_code, icon, visible, status, creator, created_at, updated_at, deleted)
+VALUES
+    ('00000000-0000-0000-0000-000000000520', '00000000-0000-0000-0000-000000000401', '文件管理', 2, 10, '/system/file', 'system/file/index', 'system:file:list', 'upload', TRUE, 1, NULL, NOW(), NOW(), FALSE);
 
--- 获取刚插入的文件管理菜单 ID
-DO $$
-DECLARE
-    file_menu_id UUID;
-BEGIN
-    SELECT id INTO file_menu_id FROM sys_menu WHERE menu_name = '文件管理' AND deleted = FALSE LIMIT 1;
-
-    -- 插入按钮权限
-    INSERT INTO sys_menu (id, parent_id, menu_name, menu_type, perms, order_num, visible, status, cache_flag) VALUES
-        (gen_random_uuid(), file_menu_id, '文件查询', 'B', 'system:file:query', 1, TRUE, 1, FALSE),
-        (gen_random_uuid(), file_menu_id, '文件上传', 'B', 'system:file:upload', 2, TRUE, 1, FALSE),
-        (gen_random_uuid(), file_menu_id, '文件下载', 'B', 'system:file:download', 3, TRUE, 1, FALSE),
-        (gen_random_uuid(), file_menu_id, '文件删除', 'B', 'system:file:delete', 4, TRUE, 1, FALSE);
-END $$;
+-- 插入按钮权限（三级）
+INSERT INTO sys_menu (id, parent_id, menu_name, menu_type, order_num, permission_code, visible, status, creator, created_at, updated_at, deleted)
+VALUES
+    ('00000000-0000-0000-0000-000000000620', '00000000-0000-0000-0000-000000000520', '文件查询', 3, 1, 'system:file:query', TRUE, 1, NULL, NOW(), NOW(), FALSE),
+    ('00000000-0000-0000-0000-000000000621', '00000000-0000-0000-0000-000000000520', '文件上传', 3, 2, 'system:file:upload', TRUE, 1, NULL, NOW(), NOW(), FALSE),
+    ('00000000-0000-0000-0000-000000000622', '00000000-0000-0000-0000-000000000520', '文件下载', 3, 3, 'system:file:download', TRUE, 1, NULL, NOW(), NOW(), FALSE),
+    ('00000000-0000-0000-0000-000000000623', '00000000-0000-0000-0000-000000000520', '文件删除', 3, 4, 'system:file:delete', TRUE, 1, NULL, NOW(), NOW(), FALSE);

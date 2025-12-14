@@ -41,3 +41,6 @@ logs/
 .env.*.local
 .env.dev
 .env.prod
+
+### uploads ###
+uploads/
