@@ -78,7 +78,7 @@ public class OpenApiConfig {
         // 服务器配置
         List<Server> servers = List.of(
             new Server().url("http://localhost:36600").description("开发环境"),
-            new Server().url("https://api.mhaibaraai.cn").description("生产环境")
+            new Server().url("https://server.mhaibaraai.cn").description("生产环境")
         );
 
         return new OpenAPI()
