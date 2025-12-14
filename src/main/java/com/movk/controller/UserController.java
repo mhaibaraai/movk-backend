@@ -33,7 +33,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "用户管理", description = "用户相关接口")
 @RestController
-@RequestMapping("/api/system/user")
+@RequestMapping("/api/system/users")
 @RequiredArgsConstructor
 @Validated
 public class UserController {
@@ -43,7 +43,7 @@ public class UserController {
     /**
      * 获取用户分页列表
      */
-    @GetMapping("/page")
+    @GetMapping
     @RequiresPermission("system:user:list")
     @DataPermission(deptIdColumn = "dept_id")
     public R<Page<UserResp>> getUserPage(
@@ -111,18 +111,18 @@ public class UserController {
      * 分配用户角色
      */
     @Operation(summary = "分配角色", description = "为用户分配角色")
-    @PostMapping("/assign-roles")
+    @PostMapping("/{userId}/roles")
     @RequiresPermission("system:user:edit")
     @Log(module = "用户管理", operation = UPDATE)
-    public R<Void> assignRoles(@Valid @RequestBody AssignRoleReq req) {
-        userService.assignRoles(req);
+    public R<Void> assignRoles(@PathVariable UUID userId, @RequestBody @NotEmpty(message = "角色ID列表不能为空") List<UUID> roleIds) {
+        userService.assignRoles(userId, roleIds);
         return R.ok();
     }
 
     /**
      * 分配用户岗位
      */
-    @PostMapping("/{userId}/assign-posts")
+    @PostMapping("/{userId}/posts")
     @RequiresPermission("system:user:edit")
     @Log(module = "用户管理", operation = UPDATE)
     public R<Void> assignPosts(@PathVariable UUID userId, @RequestBody @NotEmpty(message = "岗位ID列表不能为空") List<UUID> postIds) {

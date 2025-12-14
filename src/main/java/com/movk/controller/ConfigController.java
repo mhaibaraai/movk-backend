@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "系统配置管理", description = "系统配置相关接口")
 @RestController
-@RequestMapping("/api/system/config")
+@RequestMapping("/api/system/configs")
 @RequiredArgsConstructor
 @Validated
 public class ConfigController {
@@ -38,7 +38,7 @@ public class ConfigController {
     /**
      * 获取配置列表
      */
-    @GetMapping("/list")
+    @GetMapping
     @RequiresPermission("system:config:list")
     public R<List<ConfigResp>> getConfigList() {
         return R.success(configService.getAllConfigs());
@@ -108,9 +108,9 @@ public class ConfigController {
     /**
      * 检查配置键是否存在
      */
-    @GetMapping("/check-key/{configKey}")
+    @GetMapping("/exists")
     @RequiresPermission("system:config:query")
-    public R<Boolean> checkConfigKey(@PathVariable String configKey) {
+    public R<Boolean> checkConfigKey(@RequestParam String configKey) {
         return R.success(configService.existsByConfigKey(configKey));
     }
 }

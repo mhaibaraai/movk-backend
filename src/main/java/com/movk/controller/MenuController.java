@@ -31,7 +31,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "菜单管理", description = "菜单相关接口")
 @RestController
-@RequestMapping("/api/system/menu")
+@RequestMapping("/api/system/menus")
 @RequiredArgsConstructor
 @Validated
 public class MenuController {
@@ -51,7 +51,7 @@ public class MenuController {
     /**
      * 获取菜单列表（扁平）
      */
-    @GetMapping("/list")
+    @GetMapping
     @RequiresPermission("system:menu:list")
     public R<List<MenuResp>> getMenuList() {
         return R.success(menuService.getAllMenus());

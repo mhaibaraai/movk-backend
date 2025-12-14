@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "部门管理", description = "部门相关接口")
 @RestController
-@RequestMapping("/api/system/dept")
+@RequestMapping("/api/system/depts")
 @RequiredArgsConstructor
 @Validated
 public class DepartmentController {
@@ -47,7 +47,7 @@ public class DepartmentController {
     /**
      * 获取部门列表（扁平）
      */
-    @GetMapping("/list")
+    @GetMapping
     @RequiresPermission("system:dept:list")
     public R<List<DeptResp>> getDeptList() {
         return R.success(departmentService.getAllDepartments());

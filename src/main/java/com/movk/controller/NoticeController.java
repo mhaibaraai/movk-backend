@@ -32,7 +32,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "通知公告管理", description = "通知公告相关接口")
 @RestController
-@RequestMapping("/api/system/notice")
+@RequestMapping("/api/system/notices")
 @RequiredArgsConstructor
 @Validated
 public class NoticeController {
@@ -43,7 +43,7 @@ public class NoticeController {
      * 获取通知公告分页列表
      */
     @Operation(summary = "分页查询通知公告", description = "管理端分页查询通知公告列表")
-    @GetMapping("/page")
+    @GetMapping
     @RequiresPermission("system:notice:list")
     public R<Page<NoticeResp>> getNoticePage(
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable

@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "字典管理", description = "字典类型和字典数据相关接口")
 @RestController
-@RequestMapping("/api/system/dict")
+@RequestMapping("/api/system/dicts")
 @RequiredArgsConstructor
 @Validated
 public class DictController {
@@ -40,7 +40,7 @@ public class DictController {
     /**
      * 获取字典类型列表
      */
-    @GetMapping("/type/list")
+    @GetMapping("/types")
     @RequiresPermission("system:dict:list")
     public R<List<DictTypeResp>> getDictTypeList() {
         return R.success(dictService.getAllDictTypes());
@@ -49,7 +49,7 @@ public class DictController {
     /**
      * 获取字典类型详情
      */
-    @GetMapping("/type/{id}")
+    @GetMapping("/types/{id}")
     @RequiresPermission("system:dict:query")
     public R<DictTypeResp> getDictTypeById(@PathVariable UUID id) {
         return R.success(dictService.getDictTypeById(id));
@@ -58,7 +58,7 @@ public class DictController {
     /**
      * 新增字典类型
      */
-    @PostMapping("/type")
+    @PostMapping("/types")
     @RequiresPermission("system:dict:add")
     @Log(module = "字典管理", operation = CREATE)
     public R<UUID> createDictType(@Valid @RequestBody DictTypeCreateReq req) {
@@ -68,7 +68,7 @@ public class DictController {
     /**
      * 修改字典类型
      */
-    @PutMapping("/type")
+    @PutMapping("/types")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = UPDATE)
     public R<Void> updateDictType(@Valid @RequestBody DictTypeUpdateReq req) {
@@ -79,7 +79,7 @@ public class DictController {
     /**
      * 删除字典类型
      */
-    @DeleteMapping("/type/{id}")
+    @DeleteMapping("/types/{id}")
     @RequiresPermission("system:dict:delete")
     @Log(module = "字典管理", operation = DELETE)
     public R<Void> deleteDictType(@PathVariable UUID id) {
@@ -92,8 +92,8 @@ public class DictController {
     /**
      * 根据字典类型获取字典数据
      */
-    @GetMapping("/data/type/{dictType}")
-    public R<List<DictDataResp>> getDictDataByType(@PathVariable String dictType) {
+    @GetMapping("/data")
+    public R<List<DictDataResp>> getDictDataByType(@RequestParam String dictType) {
         return R.success(dictService.getDictDataByType(dictType));
     }
 
@@ -143,7 +143,7 @@ public class DictController {
     /**
      * 刷新字典缓存
      */
-    @DeleteMapping("/refresh-cache")
+    @DeleteMapping("/cache")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = OTHER, description = "刷新缓存")
     public R<Void> refreshCache() {
@@ -154,9 +154,9 @@ public class DictController {
     /**
      * 检查字典类型是否存在
      */
-    @GetMapping("/type/check/{dictType}")
+    @GetMapping("/types/exists")
     @RequiresPermission("system:dict:query")
-    public R<Boolean> checkDictType(@PathVariable String dictType) {
+    public R<Boolean> checkDictType(@RequestParam String dictType) {
         return R.success(dictService.existsByDictType(dictType));
     }
 }

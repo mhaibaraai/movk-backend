@@ -31,7 +31,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "角色管理", description = "角色相关接口")
 @RestController
-@RequestMapping("/api/system/role")
+@RequestMapping("/api/system/roles")
 @RequiredArgsConstructor
 @Validated
 public class RoleController {
@@ -41,7 +41,7 @@ public class RoleController {
     /**
      * 获取角色分页列表
      */
-    @GetMapping("/page")
+    @GetMapping
     @RequiresPermission("system:role:list")
     public R<Page<RoleResp>> getRolePage(
             RoleQueryReq query,
@@ -105,20 +105,20 @@ public class RoleController {
     /**
      * 分配角色菜单权限
      */
-    @PostMapping("/assign-menus")
+    @PostMapping("/{roleId}/menus")
     @RequiresPermission("system:role:edit")
     @Log(module = "角色管理", operation = UPDATE)
-    public R<Void> assignMenus(@Valid @RequestBody AssignMenuReq req) {
-        roleService.assignMenus(req);
+    public R<Void> assignMenus(@PathVariable UUID roleId, @RequestBody @NotEmpty(message = "菜单ID列表不能为空") List<UUID> menuIds) {
+        roleService.assignMenus(roleId, menuIds);
         return R.ok();
     }
 
     /**
      * 检查角色编码是否存在
      */
-    @GetMapping("/check-code/{code}")
+    @GetMapping("/exists")
     @RequiresPermission("system:role:query")
-    public R<Boolean> checkRoleCode(@PathVariable String code) {
+    public R<Boolean> checkRoleCode(@RequestParam String code) {
         return R.success(roleService.existsByCode(code));
     }
 }

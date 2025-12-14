@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "岗位管理", description = "岗位相关接口")
 @RestController
-@RequestMapping("/api/system/post")
+@RequestMapping("/api/system/posts")
 @RequiredArgsConstructor
 @Validated
 public class PostController {
@@ -38,7 +38,7 @@ public class PostController {
     /**
      * 获取岗位列表
      */
-    @GetMapping("/list")
+    @GetMapping
     @RequiresPermission("system:post:list")
     public R<List<PostResp>> getPostList() {
         return R.success(postService.getAllPosts());
@@ -88,9 +88,9 @@ public class PostController {
     /**
      * 检查岗位编码是否存在
      */
-    @GetMapping("/check-code/{code}")
+    @GetMapping("/exists")
     @RequiresPermission("system:post:query")
-    public R<Boolean> checkPostCode(@PathVariable String code) {
+    public R<Boolean> checkPostCode(@RequestParam String code) {
         return R.success(postService.existsByCode(code));
     }
 }
