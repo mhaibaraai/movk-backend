@@ -144,16 +144,20 @@ public class UserController {
 
     /**
      * 检查用户名是否存在
+     * 需要登录状态，防止用户枚举攻击
      */
     @GetMapping("/check-username/{username}")
+    @RequiresPermission("system:user:query")
     public R<Boolean> checkUsername(@PathVariable String username) {
         return R.success(userService.existsByUsername(username));
     }
 
     /**
      * 检查邮箱是否存在
+     * 需要登录状态，防止用户枚举攻击
      */
     @GetMapping("/check-email/{email}")
+    @RequiresPermission("system:user:query")
     public R<Boolean> checkEmail(@PathVariable String email) {
         return R.success(userService.existsByEmail(email));
     }
