@@ -25,6 +25,8 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
@@ -98,12 +100,11 @@ public class CacheConfig implements CachingConfigurer {
      */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-        // 默认缓存配置
+        // 默认缓存配置（使用容错序列化器）
         RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
             .entryTtl(Duration.ofHours(DEFAULT_TTL_HOURS))
             .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
-            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(
-                new GenericJackson2JsonRedisSerializer(objectMapper())))
+            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(faultTolerantJsonSerializer()))
             .disableCachingNullValues();
 
         // 不同缓存的个性化配置
@@ -165,5 +166,32 @@ public class CacheConfig implements CachingConfigurer {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         return mapper;
+    }
+
+    /**
+     * 容错的 JSON 序列化器
+     * 当反序列化失败时返回 null，触发缓存重新加载
+     */
+    private RedisSerializer<Object> faultTolerantJsonSerializer() {
+        GenericJackson2JsonRedisSerializer delegate = new GenericJackson2JsonRedisSerializer(objectMapper());
+        return new RedisSerializer<>() {
+            @Override
+            public byte[] serialize(Object value) throws SerializationException {
+                return delegate.serialize(value);
+            }
+
+            @Override
+            public Object deserialize(byte[] bytes) throws SerializationException {
+                if (bytes == null || bytes.length == 0) {
+                    return null;
+                }
+                try {
+                    return delegate.deserialize(bytes);
+                } catch (SerializationException e) {
+                    log.warn("缓存反序列化失败，将返回 null 触发缓存重建: {}", e.getMessage());
+                    return null;
+                }
+            }
+        };
     }
 }
