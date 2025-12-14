@@ -15,12 +15,14 @@ import com.movk.service.LoginLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -33,6 +35,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/system/loginlog")
 @RequiredArgsConstructor
+@Validated
 public class LoginLogController {
 
     private final LoginLogService loginLogService;
@@ -94,7 +97,8 @@ public class LoginLogController {
     @DeleteMapping("/clean")
     @RequiresPermission("monitor:loginlog:remove")
     public R<Integer> clean(
-        @Parameter(description = "保留天数") @RequestParam(defaultValue = "90") int days
+        @Parameter(description = "保留天数，最少保留7天") 
+        @RequestParam(defaultValue = "90") @Min(value = 7, message = "保留天数不能少于7天") int days
     ) {
         int deleted = loginLogService.cleanLogs(days);
         return R.success(deleted);
