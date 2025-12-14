@@ -8,6 +8,8 @@ package com.movk.repository;
 import com.movk.common.enums.EnableStatus;
 import com.movk.common.enums.NoticeType;
 import com.movk.entity.Notice;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +21,11 @@ import java.util.UUID;
  */
 @Repository
 public interface NoticeRepository extends JpaRepository<Notice, UUID> {
+
+    /**
+     * 分页查询未删除的通知
+     */
+    Page<Notice> findByDeletedFalse(Pageable pageable);
 
     /**
      * 查询所有未删除的通知，按创建时间降序
