@@ -11,8 +11,8 @@ public final class SecurityEndpoints {
 
     public static final String[] PUBLIC_APIS = new String[] {
             // 认证相关
-            "/auth/login",
-            "/auth/register",
+            "/api/auth/login",
+            "/api/auth/register",
             // Swagger/OpenAPI 文档
             "/swagger-ui.html",
             "/swagger-ui/**",
