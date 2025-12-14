@@ -114,6 +114,9 @@ public class LogAspect {
                 return;
             }
 
+            log.debug("捕获操作日志 - module: {}, operation: {}, method: {}",
+                logAnnotation.module(), logAnnotation.operation(), method.getName());
+
             // 构建日志实体
             OperateLog operateLog = buildOperateLog(joinPoint, logAnnotation, ex, result);
 
