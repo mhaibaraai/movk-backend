@@ -43,6 +43,7 @@ public class UserController {
     /**
      * 获取用户分页列表
      */
+    @Operation(summary = "获取用户分页列表", description = "根据查询条件分页查询用户信息")
     @GetMapping
     @RequiresPermission("system:user:list")
     @DataPermission(deptIdColumn = "dept_id")
@@ -56,6 +57,7 @@ public class UserController {
     /**
      * 获取用户详情
      */
+    @Operation(summary = "获取用户详情", description = "根据用户 ID 查询用户详细信息")
     @GetMapping("/{id}")
     @RequiresPermission("system:user:query")
     public R<UserDetailResp> getUserById(@PathVariable UUID id) {
@@ -88,6 +90,7 @@ public class UserController {
     /**
      * 删除用户
      */
+    @Operation(summary = "删除用户", description = "根据用户 ID 删除用户")
     @DeleteMapping("/{id}")
     @RequiresPermission("system:user:delete")
     @Log(module = "用户管理", operation = DELETE)
@@ -99,6 +102,7 @@ public class UserController {
     /**
      * 批量删除用户
      */
+    @Operation(summary = "批量删除用户", description = "根据用户 ID 列表批量删除用户")
     @DeleteMapping("/batch")
     @RequiresPermission("system:user:delete")
     @Log(module = "用户管理", operation = DELETE)
@@ -122,6 +126,7 @@ public class UserController {
     /**
      * 分配用户岗位
      */
+    @Operation(summary = "分配岗位", description = "为用户分配岗位")
     @PostMapping("/{userId}/posts")
     @RequiresPermission("system:user:edit")
     @Log(module = "用户管理", operation = UPDATE)
@@ -146,6 +151,7 @@ public class UserController {
      * 检查用户名是否存在
      * 需要登录状态，防止用户枚举攻击
      */
+    @Operation(summary = "检查用户名", description = "检查用户名是否已存在")
     @GetMapping("/check-username/{username}")
     @RequiresPermission("system:user:query")
     public R<Boolean> checkUsername(@PathVariable String username) {
@@ -156,6 +162,7 @@ public class UserController {
      * 检查邮箱是否存在
      * 需要登录状态，防止用户枚举攻击
      */
+    @Operation(summary = "检查邮箱", description = "检查邮箱是否已存在")
     @GetMapping("/check-email/{email}")
     @RequiresPermission("system:user:query")
     public R<Boolean> checkEmail(@PathVariable String email) {

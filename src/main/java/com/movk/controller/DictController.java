@@ -40,6 +40,7 @@ public class DictController {
     /**
      * 获取字典类型列表
      */
+    @Operation(summary = "获取字典类型列表", description = "获取所有字典类型列表")
     @GetMapping("/types")
     @RequiresPermission("system:dict:list")
     public R<List<DictTypeResp>> getDictTypeList() {
@@ -49,6 +50,7 @@ public class DictController {
     /**
      * 获取字典类型详情
      */
+    @Operation(summary = "获取字典类型详情", description = "根据字典类型 ID 查询详细信息")
     @GetMapping("/types/{id}")
     @RequiresPermission("system:dict:query")
     public R<DictTypeResp> getDictTypeById(@PathVariable UUID id) {
@@ -58,6 +60,7 @@ public class DictController {
     /**
      * 新增字典类型
      */
+    @Operation(summary = "新增字典类型", description = "创建新的字典类型")
     @PostMapping("/types")
     @RequiresPermission("system:dict:add")
     @Log(module = "字典管理", operation = CREATE)
@@ -68,6 +71,7 @@ public class DictController {
     /**
      * 修改字典类型
      */
+    @Operation(summary = "修改字典类型", description = "修改字典类型信息")
     @PutMapping("/types")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = UPDATE)
@@ -79,6 +83,7 @@ public class DictController {
     /**
      * 删除字典类型
      */
+    @Operation(summary = "删除字典类型", description = "根据字典类型 ID 删除字典类型")
     @DeleteMapping("/types/{id}")
     @RequiresPermission("system:dict:delete")
     @Log(module = "字典管理", operation = DELETE)
@@ -92,6 +97,7 @@ public class DictController {
     /**
      * 根据字典类型获取字典数据
      */
+    @Operation(summary = "获取字典数据", description = "根据字典类型获取对应的字典数据列表")
     @GetMapping("/data")
     public R<List<DictDataResp>> getDictDataByType(@RequestParam String dictType) {
         return R.success(dictService.getDictDataByType(dictType));
@@ -100,6 +106,7 @@ public class DictController {
     /**
      * 获取字典数据详情
      */
+    @Operation(summary = "获取字典数据详情", description = "根据字典数据 ID 查询详细信息")
     @GetMapping("/data/{id}")
     @RequiresPermission("system:dict:query")
     public R<DictDataResp> getDictDataById(@PathVariable UUID id) {
@@ -109,6 +116,7 @@ public class DictController {
     /**
      * 新增字典数据
      */
+    @Operation(summary = "新增字典数据", description = "为指定字典类型创建新的字典数据")
     @PostMapping("/data")
     @RequiresPermission("system:dict:add")
     @Log(module = "字典管理", operation = CREATE)
@@ -119,6 +127,7 @@ public class DictController {
     /**
      * 修改字典数据
      */
+    @Operation(summary = "修改字典数据", description = "修改字典数据信息")
     @PutMapping("/data")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = UPDATE)
@@ -130,6 +139,7 @@ public class DictController {
     /**
      * 删除字典数据
      */
+    @Operation(summary = "删除字典数据", description = "根据字典数据 ID 删除字典数据")
     @DeleteMapping("/data/{id}")
     @RequiresPermission("system:dict:delete")
     @Log(module = "字典管理", operation = DELETE)
@@ -143,6 +153,7 @@ public class DictController {
     /**
      * 刷新字典缓存
      */
+    @Operation(summary = "刷新字典缓存", description = "清除并重新加载字典缓存")
     @DeleteMapping("/cache")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = OTHER, description = "刷新缓存")
@@ -154,6 +165,7 @@ public class DictController {
     /**
      * 检查字典类型是否存在
      */
+    @Operation(summary = "检查字典类型", description = "检查指定字典类型是否已存在")
     @GetMapping("/types/exists")
     @RequiresPermission("system:dict:query")
     public R<Boolean> checkDictType(@RequestParam String dictType) {

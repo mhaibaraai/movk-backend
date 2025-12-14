@@ -38,6 +38,7 @@ public class DepartmentController {
     /**
      * 获取部门树
      */
+    @Operation(summary = "获取部门树", description = "获取树形结构的部门列表")
     @GetMapping("/tree")
     @RequiresPermission("system:dept:list")
     public R<List<DeptResp>> getDeptTree() {
@@ -47,6 +48,7 @@ public class DepartmentController {
     /**
      * 获取部门列表（扁平）
      */
+    @Operation(summary = "获取部门列表", description = "获取扁平化的部门列表")
     @GetMapping
     @RequiresPermission("system:dept:list")
     public R<List<DeptResp>> getDeptList() {
@@ -56,6 +58,7 @@ public class DepartmentController {
     /**
      * 获取部门详情
      */
+    @Operation(summary = "获取部门详情", description = "根据部门 ID 查询部门详细信息")
     @GetMapping("/{id}")
     @RequiresPermission("system:dept:query")
     public R<DeptResp> getDeptById(@PathVariable UUID id) {
@@ -65,6 +68,7 @@ public class DepartmentController {
     /**
      * 新增部门
      */
+    @Operation(summary = "新增部门", description = "创建新部门")
     @PostMapping
     @RequiresPermission("system:dept:add")
     @Log(module = "部门管理", operation = CREATE)
@@ -75,6 +79,7 @@ public class DepartmentController {
     /**
      * 修改部门
      */
+    @Operation(summary = "修改部门", description = "修改部门信息")
     @PutMapping
     @RequiresPermission("system:dept:edit")
     @Log(module = "部门管理", operation = UPDATE)
@@ -86,6 +91,7 @@ public class DepartmentController {
     /**
      * 删除部门
      */
+    @Operation(summary = "删除部门", description = "根据部门 ID 删除部门")
     @DeleteMapping("/{id}")
     @RequiresPermission("system:dept:delete")
     @Log(module = "部门管理", operation = DELETE)
@@ -98,6 +104,7 @@ public class DepartmentController {
      * 获取部门及子部门ID列表
      * 用于数据权限范围选择
      */
+    @Operation(summary = "获取部门及子部门 ID", description = "获取指定部门及其所有子部门的 ID 列表")
     @GetMapping("/{id}/children-ids")
     @RequiresPermission("system:dept:list")
     public R<List<UUID>> getDeptAndChildIds(@PathVariable UUID id) {

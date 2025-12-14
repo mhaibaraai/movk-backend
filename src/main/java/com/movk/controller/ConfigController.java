@@ -38,6 +38,7 @@ public class ConfigController {
     /**
      * 获取配置列表
      */
+    @Operation(summary = "获取配置列表", description = "获取所有系统配置列表")
     @GetMapping
     @RequiresPermission("system:config:list")
     public R<List<ConfigResp>> getConfigList() {
@@ -47,6 +48,7 @@ public class ConfigController {
     /**
      * 获取配置详情
      */
+    @Operation(summary = "获取配置详情", description = "根据配置 ID 查询配置详细信息")
     @GetMapping("/{id}")
     @RequiresPermission("system:config:query")
     public R<ConfigResp> getConfigById(@PathVariable UUID id) {
@@ -57,6 +59,7 @@ public class ConfigController {
      * 根据配置键获取配置值
      * 此接口无需权限，供前端获取公开配置
      */
+    @Operation(summary = "根据配置键获取值", description = "根据配置键获取对应的配置值，无需权限")
     @GetMapping("/key/{configKey}")
     public R<String> getConfigByKey(@PathVariable String configKey) {
         return R.success(configService.getConfigValue(configKey));
@@ -65,6 +68,7 @@ public class ConfigController {
     /**
      * 新增配置
      */
+    @Operation(summary = "新增配置", description = "创建新的系统配置")
     @PostMapping
     @RequiresPermission("system:config:add")
     @Log(module = "系统配置", operation = CREATE)
@@ -75,6 +79,7 @@ public class ConfigController {
     /**
      * 修改配置
      */
+    @Operation(summary = "修改配置", description = "修改系统配置信息")
     @PutMapping
     @RequiresPermission("system:config:edit")
     @Log(module = "系统配置", operation = UPDATE)
@@ -86,6 +91,7 @@ public class ConfigController {
     /**
      * 删除配置
      */
+    @Operation(summary = "删除配置", description = "根据配置 ID 删除系统配置")
     @DeleteMapping("/{id}")
     @RequiresPermission("system:config:delete")
     @Log(module = "系统配置", operation = DELETE)
@@ -97,6 +103,7 @@ public class ConfigController {
     /**
      * 刷新配置缓存
      */
+    @Operation(summary = "刷新配置缓存", description = "清除并重新加载配置缓存")
     @DeleteMapping("/refresh-cache")
     @RequiresPermission("system:config:edit")
     @Log(module = "系统配置", operation = OTHER, description = "刷新缓存")
@@ -108,6 +115,7 @@ public class ConfigController {
     /**
      * 检查配置键是否存在
      */
+    @Operation(summary = "检查配置键", description = "检查指定配置键是否已存在")
     @GetMapping("/exists")
     @RequiresPermission("system:config:query")
     public R<Boolean> checkConfigKey(@RequestParam String configKey) {

@@ -10,6 +10,7 @@ import com.movk.dto.role.*;
 import com.movk.security.annotation.Log;
 import com.movk.security.annotation.RequiresPermission;
 import com.movk.service.RoleService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -41,6 +42,7 @@ public class RoleController {
     /**
      * 获取角色分页列表
      */
+    @Operation(summary = "获取角色分页列表", description = "根据查询条件分页查询角色信息")
     @GetMapping
     @RequiresPermission("system:role:list")
     public R<Page<RoleResp>> getRolePage(
@@ -53,6 +55,7 @@ public class RoleController {
     /**
      * 获取角色详情
      */
+    @Operation(summary = "获取角色详情", description = "根据角色 ID 查询角色详细信息")
     @GetMapping("/{id}")
     @RequiresPermission("system:role:query")
     public R<RoleDetailResp> getRoleById(@PathVariable UUID id) {
@@ -62,6 +65,7 @@ public class RoleController {
     /**
      * 新增角色
      */
+    @Operation(summary = "新增角色", description = "创建新角色")
     @PostMapping
     @RequiresPermission("system:role:add")
     @Log(module = "角色管理", operation = CREATE)
@@ -72,6 +76,7 @@ public class RoleController {
     /**
      * 修改角色
      */
+    @Operation(summary = "修改角色", description = "修改角色信息")
     @PutMapping
     @RequiresPermission("system:role:edit")
     @Log(module = "角色管理", operation = UPDATE)
@@ -83,6 +88,7 @@ public class RoleController {
     /**
      * 删除角色
      */
+    @Operation(summary = "删除角色", description = "根据角色 ID 删除角色")
     @DeleteMapping("/{id}")
     @RequiresPermission("system:role:delete")
     @Log(module = "角色管理", operation = DELETE)
@@ -94,6 +100,7 @@ public class RoleController {
     /**
      * 批量删除角色
      */
+    @Operation(summary = "批量删除角色", description = "根据角色 ID 列表批量删除角色")
     @DeleteMapping("/batch")
     @RequiresPermission("system:role:delete")
     @Log(module = "角色管理", operation = DELETE)
@@ -105,6 +112,7 @@ public class RoleController {
     /**
      * 分配角色菜单权限
      */
+    @Operation(summary = "分配菜单权限", description = "为角色分配菜单权限")
     @PostMapping("/{roleId}/menus")
     @RequiresPermission("system:role:edit")
     @Log(module = "角色管理", operation = UPDATE)
@@ -116,6 +124,7 @@ public class RoleController {
     /**
      * 检查角色编码是否存在
      */
+    @Operation(summary = "检查角色编码", description = "检查角色编码是否已存在")
     @GetMapping("/exists")
     @RequiresPermission("system:role:query")
     public R<Boolean> checkRoleCode(@RequestParam String code) {
