@@ -14,7 +14,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,18 +88,8 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public Page<NoticeResp> getNoticePage(Pageable pageable) {
-        // 简单实现：先查全部未删除的，再分页
-        List<Notice> allNotices = noticeRepository.findByDeletedFalseOrderByCreatedAtDesc();
-        
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), allNotices.size());
-        
-        List<NoticeResp> pageContent = allNotices.subList(start, end)
-            .stream()
-            .map(this::toResp)
-            .collect(Collectors.toList());
-        
-        return new PageImpl<>(pageContent, pageable, allNotices.size());
+        Page<Notice> noticePage = noticeRepository.findByDeletedFalse(pageable);
+        return noticePage.map(this::toResp);
     }
 
     @Override

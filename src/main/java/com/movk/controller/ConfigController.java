@@ -10,7 +10,12 @@ import com.movk.dto.config.*;
 import com.movk.security.annotation.Log;
 import com.movk.security.annotation.RequiresPermission;
 import com.movk.service.ConfigService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +26,11 @@ import static com.movk.common.enums.OperationType.*;
 /**
  * 系统配置 Controller
  */
+@Tag(name = "系统配置管理", description = "系统配置相关接口")
 @RestController
 @RequestMapping("/api/system/config")
 @RequiredArgsConstructor
+@Validated
 public class ConfigController {
 
     private final ConfigService configService;
@@ -61,7 +68,7 @@ public class ConfigController {
     @PostMapping
     @RequiresPermission("system:config:add")
     @Log(module = "系统配置", operation = CREATE)
-    public R<UUID> createConfig(@RequestBody ConfigCreateReq req) {
+    public R<UUID> createConfig(@Valid @RequestBody ConfigCreateReq req) {
         return R.success(configService.createConfig(req));
     }
 
@@ -71,7 +78,7 @@ public class ConfigController {
     @PutMapping
     @RequiresPermission("system:config:edit")
     @Log(module = "系统配置", operation = UPDATE)
-    public R<Void> updateConfig(@RequestBody ConfigUpdateReq req) {
+    public R<Void> updateConfig(@Valid @RequestBody ConfigUpdateReq req) {
         configService.updateConfig(req);
         return R.ok();
     }

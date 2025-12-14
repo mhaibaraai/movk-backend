@@ -10,7 +10,12 @@ import com.movk.dto.post.*;
 import com.movk.security.annotation.Log;
 import com.movk.security.annotation.RequiresPermission;
 import com.movk.service.PostService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +26,11 @@ import static com.movk.common.enums.OperationType.*;
 /**
  * 岗位管理 Controller
  */
+@Tag(name = "岗位管理", description = "岗位相关接口")
 @RestController
 @RequestMapping("/api/system/post")
 @RequiredArgsConstructor
+@Validated
 public class PostController {
 
     private final PostService postService;
@@ -52,7 +59,7 @@ public class PostController {
     @PostMapping
     @RequiresPermission("system:post:add")
     @Log(module = "岗位管理", operation = CREATE)
-    public R<UUID> createPost(@RequestBody PostCreateReq req) {
+    public R<UUID> createPost(@Valid @RequestBody PostCreateReq req) {
         return R.success(postService.createPost(req));
     }
 
@@ -62,7 +69,7 @@ public class PostController {
     @PutMapping
     @RequiresPermission("system:post:edit")
     @Log(module = "岗位管理", operation = UPDATE)
-    public R<Void> updatePost(@RequestBody PostUpdateReq req) {
+    public R<Void> updatePost(@Valid @RequestBody PostUpdateReq req) {
         postService.updatePost(req);
         return R.ok();
     }

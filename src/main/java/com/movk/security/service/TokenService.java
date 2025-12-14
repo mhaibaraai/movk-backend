@@ -7,15 +7,18 @@ package com.movk.security.service;
 
 import com.movk.security.model.AuthTokensDTO;
 import com.movk.security.model.LoginUser;
+import com.movk.service.SessionService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TokenService {
 
     private final JwtService jwtService;
+    private final SessionService sessionService;
 
-    public TokenService(JwtService jwtService) {
+    public TokenService(JwtService jwtService, SessionService sessionService) {
         this.jwtService = jwtService;
+        this.sessionService = sessionService;
     }
 
     public AuthTokensDTO generateTokens(LoginUser loginUser) {
@@ -23,6 +26,9 @@ public class TokenService {
         long expirationMillis = jwtService.getExpirationDateFromToken(accessToken).getTime();
         long nowMillis = System.currentTimeMillis();
         long remainingSeconds = Math.max(0L, (expirationMillis - nowMillis) / 1000L);
+
+        // 创建会话记录（在线用户）
+        sessionService.createSession(accessToken, loginUser, remainingSeconds);
 
         return AuthTokensDTO.builder()
                 .accessToken(accessToken)
@@ -35,6 +41,9 @@ public class TokenService {
         if (!jwtService.validateToken(oldToken)) {
             throw new IllegalArgumentException("无效的令牌");
         }
+
+        // 销毁旧会话
+        sessionService.destroySession(oldToken);
 
         String username = jwtService.getUsernameFromToken(oldToken);
         java.util.UUID userId = jwtService.getUserIdFromToken(oldToken);
@@ -52,8 +61,7 @@ public class TokenService {
     }
 
     public void revokeToken(String token) {
-        // JWT 是无状态的，无法真正撤销令牌
-        // 可以考虑将令牌加入黑名单，或缩短令牌有效期
-        // 这里留空以示意
+        // 销毁会话，使 token 失效
+        sessionService.destroySession(token);
     }
 }

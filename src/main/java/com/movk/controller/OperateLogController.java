@@ -15,12 +15,14 @@ import com.movk.service.OperateLogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.OffsetDateTime;
@@ -34,6 +36,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/system/operlog")
 @RequiredArgsConstructor
+@Validated
 public class OperateLogController {
 
     private final OperateLogService operateLogService;
@@ -96,7 +99,8 @@ public class OperateLogController {
     @DeleteMapping("/clean")
     @RequiresPermission("monitor:operlog:remove")
     public R<Integer> clean(
-        @Parameter(description = "保留天数") @RequestParam(defaultValue = "30") int days
+        @Parameter(description = "保留天数，最少保留7天") 
+        @RequestParam(defaultValue = "30") @Min(value = 7, message = "保留天数不能少于7天") int days
     ) {
         int deleted = operateLogService.cleanLogs(days);
         return R.success(deleted);

@@ -8,6 +8,7 @@ package com.movk.base.handler;
 import com.movk.base.exception.BusinessException;
 import com.movk.base.result.R;
 import com.movk.base.result.RCode;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -187,6 +188,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<R<?>> handleIllegalArgument(IllegalArgumentException ex, HttpServletRequest req) {
         log.warn("IllegalArgumentException: method={}, uri={}, message={}", req.getMethod(), req.getRequestURI(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(R.error(RCode.BAD_REQUEST, ex.getMessage()));
+    }
+
+    /**
+     * 处理实体不存在异常（JPA EntityNotFoundException）
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<R<?>> handleEntityNotFound(EntityNotFoundException ex, HttpServletRequest req) {
+        log.warn("EntityNotFoundException: method={}, uri={}, message={}", req.getMethod(), req.getRequestURI(), ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(R.error(RCode.NOT_FOUND, ex.getMessage()));
     }
 
     /**
