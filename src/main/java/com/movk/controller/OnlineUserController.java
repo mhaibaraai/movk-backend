@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,10 +27,11 @@ import java.util.UUID;
 /**
  * 在线用户管理
  */
-@Tag(name = "在线用户管理")
+@Tag(name = "在线用户管理", description = "在线用户监控相关接口")
 @RestController
 @RequestMapping("/system/online")
 @RequiredArgsConstructor
+@Validated
 public class OnlineUserController {
 
     private final OnlineUserService onlineUserService;

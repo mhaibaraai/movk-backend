@@ -10,7 +10,12 @@ import com.movk.dto.dept.*;
 import com.movk.security.annotation.Log;
 import com.movk.security.annotation.RequiresPermission;
 import com.movk.service.DepartmentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +26,11 @@ import static com.movk.common.enums.OperationType.*;
 /**
  * 部门管理 Controller
  */
+@Tag(name = "部门管理", description = "部门相关接口")
 @RestController
 @RequestMapping("/api/system/dept")
 @RequiredArgsConstructor
+@Validated
 public class DepartmentController {
 
     private final DepartmentService departmentService;
@@ -61,7 +68,7 @@ public class DepartmentController {
     @PostMapping
     @RequiresPermission("system:dept:add")
     @Log(module = "部门管理", operation = CREATE)
-    public R<UUID> createDept(@RequestBody DeptCreateReq req) {
+    public R<UUID> createDept(@Valid @RequestBody DeptCreateReq req) {
         return R.success(departmentService.createDepartment(req));
     }
 
@@ -71,7 +78,7 @@ public class DepartmentController {
     @PutMapping
     @RequiresPermission("system:dept:edit")
     @Log(module = "部门管理", operation = UPDATE)
-    public R<Void> updateDept(@RequestBody DeptUpdateReq req) {
+    public R<Void> updateDept(@Valid @RequestBody DeptUpdateReq req) {
         departmentService.updateDepartment(req);
         return R.ok();
     }

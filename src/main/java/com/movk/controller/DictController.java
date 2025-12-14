@@ -10,7 +10,12 @@ import com.movk.dto.dict.*;
 import com.movk.security.annotation.Log;
 import com.movk.security.annotation.RequiresPermission;
 import com.movk.service.DictService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +26,11 @@ import static com.movk.common.enums.OperationType.*;
 /**
  * 字典管理 Controller
  */
+@Tag(name = "字典管理", description = "字典类型和字典数据相关接口")
 @RestController
 @RequestMapping("/api/system/dict")
 @RequiredArgsConstructor
+@Validated
 public class DictController {
 
     private final DictService dictService;
@@ -54,7 +61,7 @@ public class DictController {
     @PostMapping("/type")
     @RequiresPermission("system:dict:add")
     @Log(module = "字典管理", operation = CREATE)
-    public R<UUID> createDictType(@RequestBody DictTypeCreateReq req) {
+    public R<UUID> createDictType(@Valid @RequestBody DictTypeCreateReq req) {
         return R.success(dictService.createDictType(req));
     }
 
@@ -64,7 +71,7 @@ public class DictController {
     @PutMapping("/type")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = UPDATE)
-    public R<Void> updateDictType(@RequestBody DictTypeUpdateReq req) {
+    public R<Void> updateDictType(@Valid @RequestBody DictTypeUpdateReq req) {
         dictService.updateDictType(req);
         return R.ok();
     }
@@ -105,7 +112,7 @@ public class DictController {
     @PostMapping("/data")
     @RequiresPermission("system:dict:add")
     @Log(module = "字典管理", operation = CREATE)
-    public R<UUID> createDictData(@RequestBody DictDataCreateReq req) {
+    public R<UUID> createDictData(@Valid @RequestBody DictDataCreateReq req) {
         return R.success(dictService.createDictData(req));
     }
 
@@ -115,7 +122,7 @@ public class DictController {
     @PutMapping("/data")
     @RequiresPermission("system:dict:edit")
     @Log(module = "字典管理", operation = UPDATE)
-    public R<Void> updateDictData(@RequestBody DictDataUpdateReq req) {
+    public R<Void> updateDictData(@Valid @RequestBody DictDataUpdateReq req) {
         dictService.updateDictData(req);
         return R.ok();
     }
