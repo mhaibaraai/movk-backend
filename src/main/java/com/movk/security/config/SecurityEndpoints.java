@@ -13,6 +13,9 @@ public final class SecurityEndpoints {
             // 认证相关
             "/api/auth/login",
             "/api/auth/register",
+            // 文件下载与预览（公开访问）
+            "/api/system/files/download/**",
+            "/api/system/files/preview/**",
             // Swagger/OpenAPI 文档
             "/swagger-ui.html",
             "/swagger-ui/**",

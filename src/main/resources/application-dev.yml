@@ -74,3 +74,44 @@ jwt:
   header:
     name: Authorization
     prefix: "Bearer "
+
+# 文件上传配置
+file:
+  base-path: ./uploads
+  max-size: 52428800
+  date-path-enabled: true
+  storage-type: local
+  allowed-extensions:
+    - jpg
+    - jpeg
+    - png
+    - gif
+    - bmp
+    - webp
+    - svg
+    - ico
+    - doc
+    - docx
+    - xls
+    - xlsx
+    - ppt
+    - pptx
+    - pdf
+    - txt
+    - md
+    - zip
+    - rar
+    - 7z
+    - tar
+    - gz
+    - json
+    - xml
+    - csv
+
+# Spring 文件上传限制
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 100MB
