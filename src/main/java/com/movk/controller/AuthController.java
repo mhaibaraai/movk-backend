@@ -18,7 +18,9 @@ import com.movk.security.service.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -102,10 +104,35 @@ public class AuthController {
     }
 
     /**
+     * 用户注册
+     */
+    @Operation(summary = "用户注册", description = "新用户通过邮箱和密码进行注册")
+    @PostMapping("/register")
+    public R<AuthTokensDTO> register(@Valid @RequestBody RegisterRequest request) {
+        return R.success(authAppService.registerAndIssueTokens(request.email(), request.password(), request.nickname()));
+    }
+
+    /**
      * 登录请求 DTO
      */
     public record LoginRequest(
             @NotBlank(message = "邮箱不能为空") String email,
             @NotBlank(message = "密码不能为空") String password
+    ) {}
+
+    /**
+     * 注册请求 DTO
+     */
+    public record RegisterRequest(
+            @NotBlank(message = "邮箱不能为空")
+            @Email(message = "邮箱格式不正确")
+            String email,
+
+            @NotBlank(message = "密码不能为空")
+            @Size(min = 6, max = 50, message = "密码长度必须在 6-50 之间")
+            String password,
+
+            @Size(max = 50, message = "昵称长度不能超过 50")
+            String nickname
     ) {}
 }
