@@ -8,6 +8,7 @@ package com.movk.service.impl;
 import com.movk.base.config.CacheConfig;
 import com.movk.base.exception.BusinessException;
 import com.movk.base.result.RCode;
+import com.movk.common.enums.RoleType;
 import com.movk.dto.role.*;
 import com.movk.entity.Department;
 import com.movk.entity.Menu;
@@ -18,6 +19,7 @@ import com.movk.repository.DepartmentRepository;
 import com.movk.repository.MenuRepository;
 import com.movk.repository.RoleMenuRepository;
 import com.movk.repository.RoleRepository;
+import com.movk.repository.UserRoleRepository;
 import com.movk.service.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -46,6 +48,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleMenuRepository roleMenuRepository;
     private final MenuRepository menuRepository;
     private final DepartmentRepository departmentRepository;
+    private final UserRoleRepository userRoleRepository;
 
     @Override
     @Transactional
@@ -114,6 +117,16 @@ public class RoleServiceImpl implements RoleService {
     public void deleteRole(UUID roleId) {
         Role role = roleRepository.findById(roleId)
             .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "角色不存在"));
+
+        // 禁止删除系统内置角色
+        if (role.getRoleType() == RoleType.BUILT_IN) {
+            throw new BusinessException(RCode.BAD_REQUEST, "系统内置角色不允许删除");
+        }
+
+        // 检查角色是否被用户使用
+        if (userRoleRepository.existsByRoleId(roleId)) {
+            throw new BusinessException(RCode.BAD_REQUEST, "该角色已分配给用户，无法删除");
+        }
 
         role.setDeleted(true);
         role.setDeletedAt(OffsetDateTime.now());
