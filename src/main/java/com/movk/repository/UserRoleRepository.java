@@ -36,4 +36,10 @@ public interface UserRoleRepository extends JpaRepository<UserRole, UserRoleId> 
     @Modifying
     @Query("DELETE FROM UserRole ur WHERE ur.id.roleId = :roleId")
     void deleteByRoleId(@Param("roleId") UUID roleId);
+
+    /**
+     * 检查角色是否被用户使用
+     */
+    @Query("SELECT CASE WHEN COUNT(ur) > 0 THEN true ELSE false END FROM UserRole ur WHERE ur.id.roleId = :roleId")
+    boolean existsByRoleId(@Param("roleId") UUID roleId);
 }

@@ -8,9 +8,12 @@ package com.movk.controller.facade;
 import com.movk.base.exception.BusinessException;
 import com.movk.base.result.RCode;
 import com.movk.common.enums.LoginType;
+import com.movk.common.enums.UserStatus;
 import com.movk.controller.vo.UserInfoVO;
 import com.movk.dto.menu.MenuTreeResp;
+import com.movk.entity.Role;
 import com.movk.entity.User;
+import com.movk.repository.RoleRepository;
 import com.movk.repository.UserRepository;
 import com.movk.security.model.AuthTokensDTO;
 import com.movk.security.model.LoginUser;
@@ -22,14 +25,17 @@ import com.movk.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class AuthAppService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final LoginUserDetailsService userDetailsService;
     private final TokenService tokenService;
     private final PermissionService permissionService;
@@ -92,5 +98,58 @@ public class AuthAppService {
                 .permissions(permissions)
                 .menus(menus)
                 .build();
+    }
+
+    @Transactional
+    public AuthTokensDTO registerAndIssueTokens(String email, String password, String nickname) {
+        // 检查邮箱是否已被使用
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new BusinessException(RCode.BAD_REQUEST, "邮箱已被使用");
+        }
+
+        // 生成用户名（从邮箱派生）
+        String username = generateUsernameFromEmail(email);
+
+        String defaultRoleCode = "user";
+
+        Role defaultRole = roleRepository.findByCodeIn(List.of(defaultRoleCode))
+                .stream()
+                .findFirst()
+                .orElse(null); // 当前允许无角色注册，可以根据业务需求修改
+
+        // 创建用户
+        User user = User.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .nickname(nickname != null && !nickname.isBlank() ? nickname : username)
+                .email(email)
+                .status(UserStatus.ACTIVE)
+                .build();
+
+        user = userRepository.save(user);
+
+        // 记录注册成功（可选）
+        loginLogService.recordLoginSuccess(user.getUsername(), user.getId(), LoginType.PASSWORD, "注册成功");
+
+        // 自动登录并返回 token
+        LoginUser loginUser = (LoginUser) userDetailsService.loadUserByUsername(user.getUsername());
+        return tokenService.generateTokens(loginUser);
+    }
+
+    /**
+     * 从邮箱生成用户名
+     * 策略：取邮箱 @ 前的部分，如果冲突则添加随机后缀
+     */
+    private String generateUsernameFromEmail(String email) {
+        String baseUsername = email.substring(0, email.indexOf('@'));
+        String username = baseUsername;
+        int suffix = 1;
+
+        while (userRepository.findByUsername(username).isPresent()) {
+            username = baseUsername + suffix;
+            suffix++;
+        }
+
+        return username;
     }
 }
