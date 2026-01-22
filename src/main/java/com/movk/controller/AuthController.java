@@ -1,13 +1,6 @@
-/*
- * @Author yixuanmiao
- * @Date 2025/09/02 09:39
- */
-
 package com.movk.controller;
 
-import com.movk.base.config.JwtHeaderProperties;
 import com.movk.base.result.R;
-import com.movk.base.result.RCode;
 import com.movk.controller.facade.AuthAppService;
 import com.movk.controller.vo.UserInfoVO;
 import com.movk.security.model.AuthTokensDTO;
@@ -30,7 +23,7 @@ import java.util.List;
 
 /**
  * 认证控制器
- * 提供用户登录、用户信息获取、权限检查等接口
+ * 提供用户登录、登出、Token 刷新、用户信息获取等接口
  */
 @Tag(name = "认证管理", description = "用户认证相关接口")
 @RestController
@@ -43,29 +36,38 @@ public class AuthController {
     private final CurrentUserService currentUserService;
     private final PermissionService permissionService;
     private final AuthAppService authAppService;
-    private final JwtHeaderProperties jwtHeaderProperties;
 
     /**
      * 用户登录
      */
-    @Operation(summary = "用户登录", description = "通过邮箱和密码进行登录认证")
+    @Operation(summary = "用户登录", description = "通过邮箱和密码进行登录认证，支持记住我功能")
     @PostMapping("/login")
     public R<AuthTokensDTO> login(@Valid @RequestBody LoginRequest request) {
-        return R.success(authAppService.loginAndIssueTokens(request.email(), request.password()));
+        return R.success(authAppService.loginAndIssueTokens(
+                request.email(),
+                request.password(),
+                request.rememberMe() != null && request.rememberMe()
+        ));
     }
 
     /**
      * 用户登出
      */
-    @Operation(summary = "用户登出", description = "撤销当前用户的认证令牌")
+    @Operation(summary = "用户登出", description = "撤销当前 RefreshToken")
     @PostMapping("/logout")
     @PreAuthorize("isAuthenticated()")
-    public R<Void> logout(@RequestHeader("${jwt.header.name}") String authHeader) {
-        if (authHeader != null && authHeader.startsWith(jwtHeaderProperties.getPrefix())) {
-            String token = authHeader.substring(jwtHeaderProperties.getPrefix().length());
-            tokenService.revokeToken(token);
-        }
+    public R<Void> logout(@Valid @RequestBody LogoutRequest request) {
+        tokenService.revokeRefreshToken(request.refreshToken());
         return R.ok();
+    }
+
+    /**
+     * 刷新 AccessToken
+     */
+    @Operation(summary = "刷新令牌", description = "使用 RefreshToken 获取新的 AccessToken")
+    @PostMapping("/refresh")
+    public R<AuthTokensDTO> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
+        return R.success(tokenService.refreshAccessToken(request.refreshToken()));
     }
 
     /**
@@ -91,37 +93,51 @@ public class AuthController {
     }
 
     /**
-     * 刷新令牌
-     */
-    @Operation(summary = "刷新令牌", description = "使用当前令牌获取新的访问令牌")
-    @PostMapping("/refresh")
-    public R<AuthTokensDTO> refreshToken(@RequestHeader("${jwt.header.name}") String authHeader) {
-        if (authHeader == null || !authHeader.startsWith(jwtHeaderProperties.getPrefix())) {
-            return R.fail(RCode.TOKEN_INVALID);
-        }
-        String token = authHeader.substring(jwtHeaderProperties.getPrefix().length());
-        return R.success(tokenService.refreshToken(token));
-    }
-
-    /**
      * 用户注册
      */
     @Operation(summary = "用户注册", description = "新用户通过邮箱和密码进行注册")
     @PostMapping("/register")
     public R<AuthTokensDTO> register(@Valid @RequestBody RegisterRequest request) {
-        return R.success(authAppService.registerAndIssueTokens(request.email(), request.password(), request.nickname()));
+        return R.success(authAppService.registerAndIssueTokens(
+                request.email(),
+                request.password(),
+                request.nickname()
+        ));
     }
 
+    // ==================== Request DTOs ====================
+
     /**
-     * 登录请求 DTO
+     * 登录请求
      */
     public record LoginRequest(
-            @NotBlank(message = "邮箱不能为空") String email,
-            @NotBlank(message = "密码不能为空") String password
+            @NotBlank(message = "邮箱不能为空")
+            String email,
+
+            @NotBlank(message = "密码不能为空")
+            String password,
+
+            Boolean rememberMe
     ) {}
 
     /**
-     * 注册请求 DTO
+     * 登出请求
+     */
+    public record LogoutRequest(
+            @NotBlank(message = "RefreshToken 不能为空")
+            String refreshToken
+    ) {}
+
+    /**
+     * 刷新 Token 请求
+     */
+    public record RefreshTokenRequest(
+            @NotBlank(message = "RefreshToken 不能为空")
+            String refreshToken
+    ) {}
+
+    /**
+     * 注册请求
      */
     public record RegisterRequest(
             @NotBlank(message = "邮箱不能为空")

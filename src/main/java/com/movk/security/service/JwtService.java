@@ -1,36 +1,32 @@
-/*
- * @Author yixuanmiao
- * @Date 2025/09/02 13:19
- */
-
 package com.movk.security.service;
 
-import jakarta.annotation.PostConstruct;
+import com.movk.security.model.LoginUser;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.movk.security.model.LoginUser;
 
 import javax.crypto.SecretKey;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 
+/**
+ * JWT 服务
+ * 仅负责 AccessToken (JWT) 的生成和验证
+ * RefreshToken 由 TokenService 通过数据库管理
+ */
 @Service
 public class JwtService {
 
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration:86400}") // 默认24小时
-    private int jwtExpiration;
+    @Value("${jwt.access-token.expiration:900}")
+    private int accessTokenExpiration;
 
     @PostConstruct
     public void validateJwtSecret() {
@@ -40,7 +36,7 @@ public class JwtService {
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("jwt.secret 必须为 Base64 编码字符串", e);
         }
-        if (keyBytes.length < 32) { // 至少 256 bit
+        if (keyBytes.length < 32) {
             throw new IllegalStateException("jwt.secret 解码后长度不足 256 bit (32 bytes)");
         }
     }
@@ -50,28 +46,30 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(LoginUser loginUser) {
+    /**
+     * 生成 AccessToken
+     */
+    public String generateAccessToken(LoginUser loginUser) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("roles", loginUser.getRoles());
         claims.put("userId", loginUser.getId().toString());
         claims.put("nickname", loginUser.getNickname());
-        
-        return createToken(claims, loginUser.getUsername());
-    }
 
-    private String createToken(Map<String, Object> claims, String subject) {
-        Date now = new Date(System.currentTimeMillis());
-        Date expiryDate = new Date(now.getTime() + jwtExpiration * 1000L);
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + accessTokenExpiration * 1000L);
 
         return Jwts.builder()
                 .claims(claims)
-                .subject(subject)
+                .subject(loginUser.getUsername())
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(getSigningKey())
                 .compact();
     }
 
+    /**
+     * 验证 AccessToken
+     */
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -82,6 +80,13 @@ public class JwtService {
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
+    }
+
+    /**
+     * 获取 AccessToken 有效期（秒）
+     */
+    public int getAccessTokenExpiration() {
+        return accessTokenExpiration;
     }
 
     public String getUsernameFromToken(String token) {
@@ -100,7 +105,7 @@ public class JwtService {
         return UUID.fromString(userIdStr);
     }
 
-    public String getDisplayNameFromToken(String token) {
+    public String getNicknameFromToken(String token) {
         Claims claims = getAllClaimsFromToken(token);
         return (String) claims.get("nickname");
     }

@@ -1,25 +1,22 @@
-/*
- * @Author yixuanmiao
- * @Date 2025/12/11
- */
-
 package com.movk.dto.log;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
- * 在线用户响应
+ * 在线用户/会话响应
  */
 @Data
+@Builder
 public class OnlineUserResp {
 
     /**
-     * 会话 ID
+     * 会话 ID（RefreshToken ID）
      */
-    private String sessionId;
+    private UUID id;
 
     /**
      * 用户 ID
@@ -32,42 +29,27 @@ public class OnlineUserResp {
     private String username;
 
     /**
-     * 部门 ID
+     * 设备信息
      */
-    private UUID deptId;
+    private String deviceInfo;
 
     /**
-     * 部门名称
+     * 客户端 IP
      */
-    private String deptName;
+    private String clientIp;
 
     /**
-     * 登录 IP
+     * 签发时间
      */
-    private String loginIp;
-
-    /**
-     * 登录地点
-     */
-    private String loginLocation;
-
-    /**
-     * 浏览器
-     */
-    private String browser;
-
-    /**
-     * 操作系统
-     */
-    private String os;
-
-    /**
-     * 登录时间
-     */
-    private OffsetDateTime loginTime;
+    private OffsetDateTime issuedAt;
 
     /**
      * 过期时间
      */
-    private OffsetDateTime expireTime;
+    private OffsetDateTime expiresAt;
+
+    /**
+     * 最后活跃时间
+     */
+    private OffsetDateTime lastUsedAt;
 }
