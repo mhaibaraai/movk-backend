@@ -7,15 +7,9 @@ package com.movk.dto.config;
 
 import com.movk.common.enums.ConfigType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.UUID;
-
 public record ConfigUpdateReq(
-    @NotNull(message = "配置ID不能为空")
-    UUID id,
-
     @NotBlank(message = "配置名称不能为空")
     @Size(min = 1, max = 100, message = "配置名称长度必须在 1-100 之间")
     String configName,

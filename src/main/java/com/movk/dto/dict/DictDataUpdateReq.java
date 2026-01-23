@@ -7,15 +7,9 @@ package com.movk.dto.dict;
 
 import com.movk.common.enums.EnableStatus;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.UUID;
-
 public record DictDataUpdateReq(
-    @NotNull(message = "字典数据ID不能为空")
-    UUID id,
-
     @NotBlank(message = "字典类型不能为空")
     @Size(min = 1, max = 100, message = "字典类型长度必须在 1-100 之间")
     String dictType,

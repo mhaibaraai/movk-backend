@@ -64,8 +64,8 @@ public class MenuServiceImpl implements MenuService {
     @Override
     @Transactional
     @CacheEvict(value = CacheConfig.USER_MENUS, allEntries = true)
-    public void updateMenu(MenuUpdateReq req) {
-        Menu menu = menuRepository.findById(req.id())
+    public void updateMenu(UUID id, MenuUpdateReq req) {
+        Menu menu = menuRepository.findById(id)
             .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "菜单不存在"));
 
         menu.setParentId(req.parentId());

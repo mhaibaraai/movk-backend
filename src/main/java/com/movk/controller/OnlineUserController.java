@@ -55,7 +55,7 @@ public class OnlineUserController {
 
     @Operation(summary = "强制下线（通过 RefreshToken ID）")
     @DeleteMapping("/sessions/{tokenId}")
-    @RequiresPermission("monitor:online:forceLogout")
+    @RequiresPermission("monitor:online:kick")
     public R<Void> forceLogoutBySession(@PathVariable UUID tokenId) {
         refreshTokenRepository.findById(tokenId).ifPresent(token -> {
             token.revoke("管理员强制下线");
@@ -66,7 +66,7 @@ public class OnlineUserController {
 
     @Operation(summary = "强制下线（通过用户 ID，踢出所有会话）")
     @DeleteMapping("/users/{userId}")
-    @RequiresPermission("monitor:online:forceLogout")
+    @RequiresPermission("monitor:online:kick")
     public R<Void> forceLogoutByUser(@PathVariable UUID userId) {
         tokenService.revokeAllUserTokens(userId, "管理员强制下线");
         return R.ok();
@@ -74,7 +74,7 @@ public class OnlineUserController {
 
     @Operation(summary = "批量强制下线")
     @DeleteMapping("/sessions")
-    @RequiresPermission("monitor:online:forceLogout")
+    @RequiresPermission("monitor:online:kick")
     public R<Void> batchForceLogout(@RequestBody List<UUID> tokenIds) {
         tokenIds.forEach(tokenId ->
             refreshTokenRepository.findById(tokenId).ifPresent(token -> {

@@ -70,7 +70,7 @@ public class ConfigController {
      */
     @Operation(summary = "新增配置", description = "创建新的系统配置")
     @PostMapping
-    @RequiresPermission("system:config:add")
+    @RequiresPermission("system:config:create")
     @Log(module = "系统配置", operation = CREATE)
     public R<UUID> createConfig(@Valid @RequestBody ConfigCreateReq req) {
         return R.success(configService.createConfig(req));
@@ -80,11 +80,11 @@ public class ConfigController {
      * 修改配置
      */
     @Operation(summary = "修改配置", description = "修改系统配置信息")
-    @PutMapping
-    @RequiresPermission("system:config:edit")
+    @PutMapping("/{id}")
+    @RequiresPermission("system:config:update")
     @Log(module = "系统配置", operation = UPDATE)
-    public R<Void> updateConfig(@Valid @RequestBody ConfigUpdateReq req) {
-        configService.updateConfig(req);
+    public R<Void> updateConfig(@PathVariable UUID id, @Valid @RequestBody ConfigUpdateReq req) {
+        configService.updateConfig(id, req);
         return R.ok();
     }
 
@@ -104,21 +104,11 @@ public class ConfigController {
      * 刷新配置缓存
      */
     @Operation(summary = "刷新配置缓存", description = "清除并重新加载配置缓存")
-    @DeleteMapping("/refresh-cache")
-    @RequiresPermission("system:config:edit")
+    @PostMapping("/refresh-cache")
+    @RequiresPermission("system:config:update")
     @Log(module = "系统配置", operation = OTHER, description = "刷新缓存")
     public R<Void> refreshCache() {
         configService.refreshCache();
         return R.ok();
-    }
-
-    /**
-     * 检查配置键是否存在
-     */
-    @Operation(summary = "检查配置键", description = "检查指定配置键是否已存在")
-    @GetMapping("/exists")
-    @RequiresPermission("system:config:query")
-    public R<Boolean> checkConfigKey(@RequestParam String configKey) {
-        return R.success(configService.existsByConfigKey(configKey));
     }
 }

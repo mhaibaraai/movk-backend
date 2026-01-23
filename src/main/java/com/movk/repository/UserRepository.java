@@ -32,8 +32,8 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
      * 根据用户名查询用户（含角色信息，减少 N+1 查询）
      */
     @Query("SELECT DISTINCT u FROM User u " +
-           "LEFT JOIN FETCH UserRole ur ON ur.id.userId = u.id " +
-           "LEFT JOIN FETCH Role r ON ur.id.roleId = r.id AND r.deleted = false " +
+           "LEFT JOIN UserRole ur ON ur.userId = u.id " +
+           "LEFT JOIN Role r ON ur.roleId = r.id AND r.deleted = false " +
            "WHERE u.username = :username AND u.deleted = false")
     Optional<User> findByUsernameWithRoles(@Param("username") String username);
 

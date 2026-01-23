@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.UUID;
 
 public record RoleUpdateReq(
-    UUID id,
     String name,
     Integer roleSort,
     DataScope dataScope,

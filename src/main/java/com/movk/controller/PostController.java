@@ -60,7 +60,7 @@ public class PostController {
      */
     @Operation(summary = "新增岗位", description = "创建新岗位")
     @PostMapping
-    @RequiresPermission("system:post:add")
+    @RequiresPermission("system:post:create")
     @Log(module = "岗位管理", operation = CREATE)
     public R<UUID> createPost(@Valid @RequestBody PostCreateReq req) {
         return R.success(postService.createPost(req));
@@ -70,11 +70,11 @@ public class PostController {
      * 修改岗位
      */
     @Operation(summary = "修改岗位", description = "修改岗位信息")
-    @PutMapping
-    @RequiresPermission("system:post:edit")
+    @PutMapping("/{id}")
+    @RequiresPermission("system:post:update")
     @Log(module = "岗位管理", operation = UPDATE)
-    public R<Void> updatePost(@Valid @RequestBody PostUpdateReq req) {
-        postService.updatePost(req);
+    public R<Void> updatePost(@PathVariable UUID id, @Valid @RequestBody PostUpdateReq req) {
+        postService.updatePost(id, req);
         return R.ok();
     }
 
@@ -90,13 +90,4 @@ public class PostController {
         return R.ok();
     }
 
-    /**
-     * 检查岗位编码是否存在
-     */
-    @Operation(summary = "检查岗位编码", description = "检查岗位编码是否已存在")
-    @GetMapping("/exists")
-    @RequiresPermission("system:post:query")
-    public R<Boolean> checkPostCode(@RequestParam String code) {
-        return R.success(postService.existsByCode(code));
-    }
 }

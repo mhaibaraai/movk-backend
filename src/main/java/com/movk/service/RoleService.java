@@ -24,7 +24,7 @@ public interface RoleService {
     /**
      * 更新角色
      */
-    void updateRole(RoleUpdateReq req);
+    void updateRole(UUID id, RoleUpdateReq req);
 
     /**
      * 删除角色（逻辑删除）

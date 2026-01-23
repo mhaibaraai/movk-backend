@@ -8,7 +8,6 @@ package com.movk.dto.user;
 import com.movk.common.enums.Gender;
 import com.movk.common.enums.UserStatus;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.List;
@@ -18,9 +17,6 @@ import java.util.UUID;
  * 用户更新请求
  */
 public record UserUpdateReq(
-    @NotNull(message = "用户ID不能为空")
-    UUID id,
-
     @Size(max = 50, message = "昵称长度不能超过 50")
     String nickname,
 

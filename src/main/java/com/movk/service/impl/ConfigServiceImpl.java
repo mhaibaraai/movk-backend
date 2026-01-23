@@ -59,8 +59,8 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     @Transactional
     @CacheEvict(value = CacheConfig.CONFIG, allEntries = true)
-    public void updateConfig(ConfigUpdateReq req) {
-        Config config = configRepository.findById(req.id())
+    public void updateConfig(UUID id, ConfigUpdateReq req) {
+        Config config = configRepository.findById(id)
             .filter(c -> !c.getDeleted())
             .orElseThrow(() -> new EntityNotFoundException("系统配置不存在"));
 

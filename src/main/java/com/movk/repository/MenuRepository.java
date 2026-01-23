@@ -47,8 +47,8 @@ public interface MenuRepository extends JpaRepository<Menu, UUID> {
      * 查询指定角色的所有菜单（通过角色菜单关联表）
      */
     @Query("SELECT DISTINCT m FROM Menu m " +
-           "JOIN RoleMenu rm ON rm.id.menuId = m.id " +
-           "JOIN Role r ON rm.id.roleId = r.id " +
+           "JOIN RoleMenu rm ON rm.menuId = m.id " +
+           "JOIN Role r ON rm.roleId = r.id " +
            "WHERE r.code IN :roleCodes " +
            "AND m.status = :status " +
            "AND m.deleted = false " +
@@ -59,12 +59,9 @@ public interface MenuRepository extends JpaRepository<Menu, UUID> {
         @Param("status") EnableStatus status
     );
 
-    /**
-     * 查询指定角色的所有菜单（可见）
-     */
     @Query("SELECT DISTINCT m FROM Menu m " +
-           "JOIN RoleMenu rm ON rm.id.menuId = m.id " +
-           "JOIN Role r ON rm.id.roleId = r.id " +
+           "JOIN RoleMenu rm ON rm.menuId = m.id " +
+           "JOIN Role r ON rm.roleId = r.id " +
            "WHERE r.code IN :roleCodes " +
            "AND m.status = :status " +
            "AND m.visible = :visible " +
@@ -77,12 +74,9 @@ public interface MenuRepository extends JpaRepository<Menu, UUID> {
         @Param("visible") Boolean visible
     );
 
-    /**
-     * 查询指定角色的所有权限标识
-     */
     @Query("SELECT DISTINCT m.permissionCode FROM Menu m " +
-           "JOIN RoleMenu rm ON rm.id.menuId = m.id " +
-           "JOIN Role r ON rm.id.roleId = r.id " +
+           "JOIN RoleMenu rm ON rm.menuId = m.id " +
+           "JOIN Role r ON rm.roleId = r.id " +
            "WHERE r.code IN :roleCodes " +
            "AND m.status = :status " +
            "AND m.permissionCode IS NOT NULL " +

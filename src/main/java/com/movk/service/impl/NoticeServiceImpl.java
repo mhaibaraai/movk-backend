@@ -50,8 +50,8 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @Transactional
-    public void updateNotice(NoticeUpdateReq req) {
-        Notice notice = noticeRepository.findById(req.id())
+    public void updateNotice(UUID id, NoticeUpdateReq req) {
+        Notice notice = noticeRepository.findById(id)
             .filter(n -> !n.getDeleted())
             .orElseThrow(() -> new EntityNotFoundException("通知公告不存在"));
 

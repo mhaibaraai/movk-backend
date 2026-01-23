@@ -65,12 +65,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     @Transactional
     @CacheEvict(value = CacheConfig.DEPT_TREE, allEntries = true)
-    public void updateDepartment(DeptUpdateReq req) {
-        Department department = departmentRepository.findById(req.id())
+    public void updateDepartment(UUID id, DeptUpdateReq req) {
+        Department department = departmentRepository.findById(id)
             .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "部门不存在"));
 
         if (req.deptCode() != null && !req.deptCode().equals(department.getDeptCode())) {
-            if (departmentRepository.existsByDeptCodeAndIdNot(req.deptCode(), req.id())) {
+            if (departmentRepository.existsByDeptCodeAndIdNot(req.deptCode(), id)) {
                 throw new BusinessException(RCode.BAD_REQUEST, "部门编码已存在");
             }
         }

@@ -23,7 +23,7 @@ public interface DepartmentService {
     /**
      * 更新部门
      */
-    void updateDepartment(DeptUpdateReq req);
+    void updateDepartment(UUID id, DeptUpdateReq req);
 
     /**
      * 删除部门（逻辑删除）

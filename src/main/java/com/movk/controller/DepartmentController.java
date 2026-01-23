@@ -70,7 +70,7 @@ public class DepartmentController {
      */
     @Operation(summary = "新增部门", description = "创建新部门")
     @PostMapping
-    @RequiresPermission("system:dept:add")
+    @RequiresPermission("system:dept:create")
     @Log(module = "部门管理", operation = CREATE)
     public R<UUID> createDept(@Valid @RequestBody DeptCreateReq req) {
         return R.success(departmentService.createDepartment(req));
@@ -80,11 +80,11 @@ public class DepartmentController {
      * 修改部门
      */
     @Operation(summary = "修改部门", description = "修改部门信息")
-    @PutMapping
-    @RequiresPermission("system:dept:edit")
+    @PutMapping("/{id}")
+    @RequiresPermission("system:dept:update")
     @Log(module = "部门管理", operation = UPDATE)
-    public R<Void> updateDept(@Valid @RequestBody DeptUpdateReq req) {
-        departmentService.updateDepartment(req);
+    public R<Void> updateDept(@PathVariable UUID id, @Valid @RequestBody DeptUpdateReq req) {
+        departmentService.updateDepartment(id, req);
         return R.ok();
     }
 

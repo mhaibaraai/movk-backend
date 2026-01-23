@@ -67,8 +67,8 @@ public class DictServiceImpl implements DictService {
         @CacheEvict(value = CacheConfig.DICT_TYPE, allEntries = true),
         @CacheEvict(value = CacheConfig.DICT_DATA, allEntries = true)
     })
-    public void updateDictType(DictTypeUpdateReq req) {
-        DictType dictType = dictTypeRepository.findById(req.id())
+    public void updateDictType(UUID id, DictTypeUpdateReq req) {
+        DictType dictType = dictTypeRepository.findById(id)
             .filter(d -> !d.getDeleted())
             .orElseThrow(() -> new EntityNotFoundException("字典类型不存在"));
 
@@ -168,8 +168,8 @@ public class DictServiceImpl implements DictService {
     @Override
     @Transactional
     @CacheEvict(value = CacheConfig.DICT_DATA, allEntries = true)
-    public void updateDictData(DictDataUpdateReq req) {
-        DictData dictData = dictDataRepository.findById(req.id())
+    public void updateDictData(UUID id, DictDataUpdateReq req) {
+        DictData dictData = dictDataRepository.findById(id)
             .filter(d -> !d.getDeleted())
             .orElseThrow(() -> new EntityNotFoundException("字典数据不存在"));
 

@@ -75,7 +75,7 @@ public class MenuController {
      */
     @Operation(summary = "新增菜单", description = "创建新菜单")
     @PostMapping
-    @RequiresPermission("system:menu:add")
+    @RequiresPermission("system:menu:create")
     @Log(module = "菜单管理", operation = CREATE)
     public R<UUID> createMenu(@Valid @RequestBody MenuCreateReq req) {
         return R.success(menuService.createMenu(req));
@@ -85,11 +85,11 @@ public class MenuController {
      * 修改菜单
      */
     @Operation(summary = "修改菜单", description = "修改菜单信息")
-    @PutMapping
-    @RequiresPermission("system:menu:edit")
+    @PutMapping("/{id}")
+    @RequiresPermission("system:menu:update")
     @Log(module = "菜单管理", operation = UPDATE)
-    public R<Void> updateMenu(@Valid @RequestBody MenuUpdateReq req) {
-        menuService.updateMenu(req);
+    public R<Void> updateMenu(@PathVariable UUID id, @Valid @RequestBody MenuUpdateReq req) {
+        menuService.updateMenu(id, req);
         return R.ok();
     }
 

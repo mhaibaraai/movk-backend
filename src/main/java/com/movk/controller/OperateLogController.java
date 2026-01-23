@@ -42,7 +42,7 @@ public class OperateLogController {
 
     @Operation(summary = "分页查询操作日志")
     @GetMapping
-    @RequiresPermission("monitor:operlog:list")
+    @RequiresPermission("monitor:operateLog:list")
     public R<Page<OperateLogResp>> list(
             OperateLogQuery query,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -56,7 +56,7 @@ public class OperateLogController {
 
     @Operation(summary = "查询操作日志详情")
     @GetMapping("/{id}")
-    @RequiresPermission("monitor:operlog:query")
+    @RequiresPermission("monitor:operateLog:query")
     public R<OperateLogResp> getById(@PathVariable Long id) {
         OperateLog log = operateLogService.getById(id);
         if (log == null) {
@@ -67,7 +67,7 @@ public class OperateLogController {
 
     @Operation(summary = "导出操作日志")
     @GetMapping("/export")
-    @RequiresPermission("monitor:operlog:export")
+    @RequiresPermission("monitor:operateLog:export")
     public R<List<OperateLogResp>> export(OperateLogQuery query) {
         BusinessStatus status = query.getStatus() != null ? BusinessStatus.fromCode(query.getStatus()) : null;
         List<OperateLog> logs = operateLogService.exportLogs(
@@ -78,7 +78,7 @@ public class OperateLogController {
 
     @Operation(summary = "清理操作日志")
     @DeleteMapping
-    @RequiresPermission("monitor:operlog:remove")
+    @RequiresPermission("monitor:operateLog:delete")
     public R<Integer> clean(
             @Parameter(description = "保留天数，最少保留7天")
             @RequestParam(defaultValue = "30") @Min(value = 7, message = "保留天数不能少于7天") int days

@@ -50,8 +50,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional
-    public void updatePost(PostUpdateReq req) {
-        Post post = postRepository.findById(req.id())
+    public void updatePost(UUID id, PostUpdateReq req) {
+        Post post = postRepository.findById(id)
             .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "岗位不存在"));
 
         post.setPostName(req.postName());

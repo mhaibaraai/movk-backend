@@ -9,7 +9,6 @@ import com.movk.base.exception.BusinessException;
 import com.movk.base.result.RCode;
 import com.movk.dto.user.*;
 import com.movk.entity.*;
-import com.movk.entity.id.UserRoleId;
 import com.movk.repository.*;
 import com.movk.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -79,8 +78,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUser(UserUpdateReq req) {
-        User user = userRepository.findById(req.id())
+    public void updateUser(UUID id, UserUpdateReq req) {
+        User user = userRepository.findById(id)
             .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "用户不存在"));
 
         if (req.email() != null && !req.email().equals(user.getEmail())) {
@@ -309,12 +308,8 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(RCode.NOT_FOUND, "用户不存在");
         }
 
-        // 批量删除旧的用户角色关联
         userRoleRepository.deleteByUserId(userId);
 
-        User user = userRepository.findById(userId).orElseThrow();
-
-        // 批量查询角色
         List<UUID> roleIdList = new ArrayList<>();
         roleIds.forEach(roleIdList::add);
 
@@ -327,12 +322,10 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException(RCode.NOT_FOUND, "部分角色不存在");
         }
 
-        // 批量保存用户角色关联
         List<UserRole> userRoles = roles.stream()
             .map(role -> UserRole.builder()
-                .id(new UserRoleId(userId, role.getId()))
-                .user(user)
-                .role(role)
+                .userId(userId)
+                .roleId(role.getId())
                 .build())
             .toList();
 

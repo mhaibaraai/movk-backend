@@ -23,7 +23,7 @@ public interface ConfigService {
     /**
      * 更新系统配置
      */
-    void updateConfig(ConfigUpdateReq req);
+    void updateConfig(UUID id, ConfigUpdateReq req);
 
     /**
      * 删除系统配置（逻辑删除）

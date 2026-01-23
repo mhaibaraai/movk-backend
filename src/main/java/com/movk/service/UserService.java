@@ -24,7 +24,7 @@ public interface UserService {
     /**
      * 更新用户
      */
-    void updateUser(UserUpdateReq req);
+    void updateUser(UUID id, UserUpdateReq req);
 
     /**
      * 删除用户（逻辑删除）

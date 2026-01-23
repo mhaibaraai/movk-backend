@@ -42,7 +42,7 @@ public class LoginLogController {
 
     @Operation(summary = "分页查询登录日志")
     @GetMapping
-    @RequiresPermission("monitor:loginlog:list")
+    @RequiresPermission("monitor:loginLog:list")
     public R<Page<LoginLogResp>> list(
             LoginLogQuery query,
             @PageableDefault(sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
@@ -56,7 +56,7 @@ public class LoginLogController {
 
     @Operation(summary = "查询登录日志详情")
     @GetMapping("/{id}")
-    @RequiresPermission("monitor:loginlog:query")
+    @RequiresPermission("monitor:loginLog:query")
     public R<LoginLogResp> getById(@PathVariable Long id) {
         LoginLog log = loginLogService.getById(id);
         if (log == null) {
@@ -67,7 +67,7 @@ public class LoginLogController {
 
     @Operation(summary = "导出登录日志")
     @GetMapping("/export")
-    @RequiresPermission("monitor:loginlog:export")
+    @RequiresPermission("monitor:loginLog:export")
     public R<List<LoginLogResp>> export(LoginLogQuery query) {
         BusinessStatus status = query.getStatus() != null ? BusinessStatus.fromCode(query.getStatus()) : null;
         List<LoginLog> logs = loginLogService.exportLogs(
@@ -78,7 +78,7 @@ public class LoginLogController {
 
     @Operation(summary = "清理登录日志")
     @DeleteMapping
-    @RequiresPermission("monitor:loginlog:remove")
+    @RequiresPermission("monitor:loginLog:delete")
     public R<Integer> clean(
             @Parameter(description = "保留天数，最少保留7天")
             @RequestParam(defaultValue = "90") @Min(value = 7, message = "保留天数不能少于7天") int days

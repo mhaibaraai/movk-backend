@@ -23,7 +23,7 @@ public interface PostService {
     /**
      * 更新岗位
      */
-    void updatePost(PostUpdateReq req);
+    void updatePost(UUID id, PostUpdateReq req);
 
     /**
      * 删除岗位（逻辑删除）

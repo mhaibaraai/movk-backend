@@ -14,7 +14,6 @@ import com.movk.entity.Department;
 import com.movk.entity.Menu;
 import com.movk.entity.Role;
 import com.movk.entity.RoleMenu;
-import com.movk.entity.id.RoleMenuId;
 import com.movk.repository.DepartmentRepository;
 import com.movk.repository.MenuRepository;
 import com.movk.repository.RoleMenuRepository;
@@ -86,8 +85,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Transactional
-    public void updateRole(RoleUpdateReq req) {
-        Role role = roleRepository.findById(req.id())
+    public void updateRole(UUID id, RoleUpdateReq req) {
+        Role role = roleRepository.findById(id)
             .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "角色不存在"));
 
         String dataScopeDeptIdsStr = null;
@@ -271,16 +270,14 @@ public class RoleServiceImpl implements RoleService {
 
         roleMenuRepository.deleteByRoleId(roleId);
 
-        Role role = roleRepository.findById(roleId).orElseThrow();
-
         for (UUID menuId : menuIds) {
-            Menu menu = menuRepository.findById(menuId)
-                .orElseThrow(() -> new BusinessException(RCode.NOT_FOUND, "菜单不存在: " + menuId));
+            if (!menuRepository.existsById(menuId)) {
+                throw new BusinessException(RCode.NOT_FOUND, "菜单不存在: " + menuId);
+            }
 
             RoleMenu roleMenu = RoleMenu.builder()
-                .id(new RoleMenuId(roleId, menuId))
-                .role(role)
-                .menu(menu)
+                .roleId(roleId)
+                .menuId(menuId)
                 .build();
 
             roleMenuRepository.save(roleMenu);

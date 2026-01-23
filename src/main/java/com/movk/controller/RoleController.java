@@ -67,7 +67,7 @@ public class RoleController {
      */
     @Operation(summary = "新增角色", description = "创建新角色")
     @PostMapping
-    @RequiresPermission("system:role:add")
+    @RequiresPermission("system:role:create")
     @Log(module = "角色管理", operation = CREATE)
     public R<UUID> createRole(@Valid @RequestBody RoleCreateReq req) {
         return R.success(roleService.createRole(req));
@@ -77,11 +77,11 @@ public class RoleController {
      * 修改角色
      */
     @Operation(summary = "修改角色", description = "修改角色信息")
-    @PutMapping
-    @RequiresPermission("system:role:edit")
+    @PutMapping("/{id}")
+    @RequiresPermission("system:role:update")
     @Log(module = "角色管理", operation = UPDATE)
-    public R<Void> updateRole(@Valid @RequestBody RoleUpdateReq req) {
-        roleService.updateRole(req);
+    public R<Void> updateRole(@PathVariable UUID id, @Valid @RequestBody RoleUpdateReq req) {
+        roleService.updateRole(id, req);
         return R.ok();
     }
 
@@ -101,7 +101,7 @@ public class RoleController {
      * 批量删除角色
      */
     @Operation(summary = "批量删除角色", description = "根据角色 ID 列表批量删除角色")
-    @DeleteMapping("/batch")
+    @DeleteMapping
     @RequiresPermission("system:role:delete")
     @Log(module = "角色管理", operation = DELETE)
     public R<Void> deleteRoles(@RequestBody @NotEmpty(message = "角色ID列表不能为空") List<UUID> ids) {
@@ -114,20 +114,11 @@ public class RoleController {
      */
     @Operation(summary = "分配菜单权限", description = "为角色分配菜单权限")
     @PostMapping("/{roleId}/menus")
-    @RequiresPermission("system:role:edit")
+    @RequiresPermission("system:role:update")
     @Log(module = "角色管理", operation = UPDATE)
     public R<Void> assignMenus(@PathVariable UUID roleId, @RequestBody @NotEmpty(message = "菜单ID列表不能为空") List<UUID> menuIds) {
         roleService.assignMenus(roleId, menuIds);
         return R.ok();
     }
 
-    /**
-     * 检查角色编码是否存在
-     */
-    @Operation(summary = "检查角色编码", description = "检查角色编码是否已存在")
-    @GetMapping("/exists")
-    @RequiresPermission("system:role:query")
-    public R<Boolean> checkRoleCode(@RequestParam String code) {
-        return R.success(roleService.existsByCode(code));
-    }
 }

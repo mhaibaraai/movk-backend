@@ -53,7 +53,7 @@ public class FileController {
      */
     @Operation(summary = "上传文件", description = "上传单个文件，返回文件信息")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @RequiresPermission("system:file:upload")
+    @RequiresPermission("system:file:create")
     @Log(module = "文件管理", operation = CREATE)
     public R<FileUploadResp> upload(
             @Parameter(description = "文件") @RequestParam("file") MultipartFile file,
@@ -67,7 +67,7 @@ public class FileController {
      */
     @Operation(summary = "批量上传文件", description = "一次上传多个文件")
     @PostMapping(value = "/upload/batch", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @RequiresPermission("system:file:upload")
+    @RequiresPermission("system:file:create")
     @Log(module = "文件管理", operation = CREATE)
     public R<List<FileUploadResp>> uploadBatch(
             @Parameter(description = "文件列表") @RequestParam("files") MultipartFile[] files,

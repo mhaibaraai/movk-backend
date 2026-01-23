@@ -25,7 +25,7 @@ public interface DictService {
     /**
      * 更新字典类型
      */
-    void updateDictType(DictTypeUpdateReq req);
+    void updateDictType(UUID id, DictTypeUpdateReq req);
 
     /**
      * 删除字典类型（逻辑删除）
@@ -57,7 +57,7 @@ public interface DictService {
     /**
      * 更新字典数据
      */
-    void updateDictData(DictDataUpdateReq req);
+    void updateDictData(UUID id, DictDataUpdateReq req);
 
     /**
      * 删除字典数据（逻辑删除）

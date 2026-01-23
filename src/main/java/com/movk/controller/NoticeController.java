@@ -77,7 +77,7 @@ public class NoticeController {
      */
     @Operation(summary = "新增公告", description = "创建新的通知公告")
     @PostMapping
-    @RequiresPermission("system:notice:add")
+    @RequiresPermission("system:notice:create")
     @Log(module = "通知公告", operation = CREATE)
     public R<UUID> createNotice(@Valid @RequestBody NoticeCreateReq req) {
         return R.success(noticeService.createNotice(req));
@@ -87,11 +87,11 @@ public class NoticeController {
      * 修改通知公告
      */
     @Operation(summary = "修改公告", description = "修改通知公告内容")
-    @PutMapping
-    @RequiresPermission("system:notice:edit")
+    @PutMapping("/{id}")
+    @RequiresPermission("system:notice:update")
     @Log(module = "通知公告", operation = UPDATE)
-    public R<Void> updateNotice(@Valid @RequestBody NoticeUpdateReq req) {
-        noticeService.updateNotice(req);
+    public R<Void> updateNotice(@PathVariable UUID id, @Valid @RequestBody NoticeUpdateReq req) {
+        noticeService.updateNotice(id, req);
         return R.ok();
     }
 

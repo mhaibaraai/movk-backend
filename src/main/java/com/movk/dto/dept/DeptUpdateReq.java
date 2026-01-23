@@ -8,15 +8,11 @@ package com.movk.dto.dept;
 import com.movk.common.enums.EnableStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.util.UUID;
 
 public record DeptUpdateReq(
-    @NotNull(message = "部门ID不能为空")
-    UUID id,
-
     UUID parentId,
 
     @NotBlank(message = "部门名称不能为空")

@@ -25,7 +25,7 @@ public interface NoticeService {
     /**
      * 更新通知公告
      */
-    void updateNotice(NoticeUpdateReq req);
+    void updateNotice(UUID id, NoticeUpdateReq req);
 
     /**
      * 删除通知公告（逻辑删除）

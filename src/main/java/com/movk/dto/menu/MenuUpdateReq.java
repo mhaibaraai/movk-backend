@@ -11,7 +11,6 @@ import com.movk.common.enums.MenuType;
 import java.util.UUID;
 
 public record MenuUpdateReq(
-    UUID id,
     UUID parentId,
     MenuType type,
     String name,

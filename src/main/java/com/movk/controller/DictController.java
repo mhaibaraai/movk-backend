@@ -62,7 +62,7 @@ public class DictController {
      */
     @Operation(summary = "新增字典类型", description = "创建新的字典类型")
     @PostMapping("/types")
-    @RequiresPermission("system:dict:add")
+    @RequiresPermission("system:dict:create")
     @Log(module = "字典管理", operation = CREATE)
     public R<UUID> createDictType(@Valid @RequestBody DictTypeCreateReq req) {
         return R.success(dictService.createDictType(req));
@@ -72,11 +72,11 @@ public class DictController {
      * 修改字典类型
      */
     @Operation(summary = "修改字典类型", description = "修改字典类型信息")
-    @PutMapping("/types")
-    @RequiresPermission("system:dict:edit")
+    @PutMapping("/types/{id}")
+    @RequiresPermission("system:dict:update")
     @Log(module = "字典管理", operation = UPDATE)
-    public R<Void> updateDictType(@Valid @RequestBody DictTypeUpdateReq req) {
-        dictService.updateDictType(req);
+    public R<Void> updateDictType(@PathVariable UUID id, @Valid @RequestBody DictTypeUpdateReq req) {
+        dictService.updateDictType(id, req);
         return R.ok();
     }
 
@@ -118,7 +118,7 @@ public class DictController {
      */
     @Operation(summary = "新增字典数据", description = "为指定字典类型创建新的字典数据")
     @PostMapping("/data")
-    @RequiresPermission("system:dict:add")
+    @RequiresPermission("system:dict:create")
     @Log(module = "字典管理", operation = CREATE)
     public R<UUID> createDictData(@Valid @RequestBody DictDataCreateReq req) {
         return R.success(dictService.createDictData(req));
@@ -128,11 +128,11 @@ public class DictController {
      * 修改字典数据
      */
     @Operation(summary = "修改字典数据", description = "修改字典数据信息")
-    @PutMapping("/data")
-    @RequiresPermission("system:dict:edit")
+    @PutMapping("/data/{id}")
+    @RequiresPermission("system:dict:update")
     @Log(module = "字典管理", operation = UPDATE)
-    public R<Void> updateDictData(@Valid @RequestBody DictDataUpdateReq req) {
-        dictService.updateDictData(req);
+    public R<Void> updateDictData(@PathVariable UUID id, @Valid @RequestBody DictDataUpdateReq req) {
+        dictService.updateDictData(id, req);
         return R.ok();
     }
 
@@ -154,21 +154,11 @@ public class DictController {
      * 刷新字典缓存
      */
     @Operation(summary = "刷新字典缓存", description = "清除并重新加载字典缓存")
-    @DeleteMapping("/cache")
-    @RequiresPermission("system:dict:edit")
+    @PostMapping("/refresh-cache")
+    @RequiresPermission("system:dict:update")
     @Log(module = "字典管理", operation = OTHER, description = "刷新缓存")
     public R<Void> refreshCache() {
         dictService.refreshCache();
         return R.ok();
-    }
-
-    /**
-     * 检查字典类型是否存在
-     */
-    @Operation(summary = "检查字典类型", description = "检查指定字典类型是否已存在")
-    @GetMapping("/types/exists")
-    @RequiresPermission("system:dict:query")
-    public R<Boolean> checkDictType(@RequestParam String dictType) {
-        return R.success(dictService.existsByDictType(dictType));
     }
 }

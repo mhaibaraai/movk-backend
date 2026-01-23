@@ -25,7 +25,7 @@ public interface MenuService {
     /**
      * 更新菜单
      */
-    void updateMenu(MenuUpdateReq req);
+    void updateMenu(UUID id, MenuUpdateReq req);
 
     /**
      * 删除菜单（逻辑删除）
