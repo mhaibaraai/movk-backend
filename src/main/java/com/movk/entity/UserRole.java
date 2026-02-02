@@ -21,12 +21,20 @@ import java.util.UUID;
 public class UserRole {
 
     @jakarta.persistence.Id
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, insertable = false, updatable = false)
     private UUID userId;
 
     @jakarta.persistence.Id
-    @Column(name = "role_id", nullable = false)
+    @Column(name = "role_id", nullable = false, insertable = false, updatable = false)
     private UUID roleId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
