@@ -32,7 +32,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "菜单管理", description = "菜单相关接口")
 @RestController
-@RequestMapping("/api/system/menus")
+@RequestMapping("/${api.version}/system/menus")
 @RequiredArgsConstructor
 @Validated
 public class MenuController {

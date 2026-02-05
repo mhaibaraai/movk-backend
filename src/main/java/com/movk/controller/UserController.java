@@ -30,7 +30,7 @@ import static com.movk.common.enums.OperationType.*;
 
 @Tag(name = "用户管理")
 @RestController
-@RequestMapping("/api/system/users")
+@RequestMapping("/${api.version}/system/users")
 @RequiredArgsConstructor
 @Validated
 public class UserController {

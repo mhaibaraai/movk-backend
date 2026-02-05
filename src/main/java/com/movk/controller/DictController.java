@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "字典管理", description = "字典类型和字典数据相关接口")
 @RestController
-@RequestMapping("/api/system/dicts")
+@RequestMapping("/${api.version}/system/dicts")
 @RequiredArgsConstructor
 @Validated
 public class DictController {

@@ -15,3 +15,7 @@ spring:
 server:
   servlet:
     context-path: /movk-backend
+
+# API 版本控制
+api:
+  version: v1

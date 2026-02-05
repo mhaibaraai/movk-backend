@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "岗位管理", description = "岗位相关接口")
 @RestController
-@RequestMapping("/api/system/posts")
+@RequestMapping("/${api.version}/system/posts")
 @RequiredArgsConstructor
 @Validated
 public class PostController {

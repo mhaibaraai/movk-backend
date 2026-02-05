@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-基于 Spring Boot 3.5 的 RBAC 后台管理系统，使用 JWT 认证、Spring Security、JPA + PostgreSQL，支持细粒度的功能权限和数据权限控制。
+基于 Spring Boot 3.5.4 的 RBAC 后台管理系统，使用 JWT 认证、Spring Security、JPA + PostgreSQL，支持细粒度的功能权限和数据权限控制。
 
 ## 核心开发命令
 
@@ -54,7 +54,7 @@ docker build -t movk-backend .
 ```
 Controller (API 层)
     ↓ 调用
-Facade/AppService (编排层) - 协调多个 Service，处理跨领域逻辑
+AppService (编排层) - 协调多个 Service，处理跨领域逻辑
     ↓ 调用
 Service (业务层) - 单一领域业务逻辑
     ↓ 调用
@@ -62,8 +62,8 @@ Repository (数据层) - JPA 数据访问
 ```
 
 **关键规则**：
-- Controller 只处理 HTTP 相关逻辑（参数校验、响应封装），复杂业务逻辑放在 Facade
-- Facade 负责编排多个 Service 完成复杂业务流程（如登录需要调用用户查询、Token 生成、日志记录等多个 Service）
+- Controller 只处理 HTTP 相关逻辑（参数校验、响应封装），复杂业务逻辑放在 AppService
+- AppService 负责编排多个 Service 完成复杂业务流程（如登录需要调用用户查询、Token 生成、日志记录等多个 Service）
 - Service 保持单一职责，一个 Service 对应一个领域实体
 - Repository 使用 Spring Data JPA，优先使用方法命名查询，复杂查询使用 Specification
 
@@ -143,12 +143,35 @@ public List<User> findAll(Specification<User> spec) { ... }
 
 ## 开发规范
 
+### API 版本控制
+
+所有 Controller 的 `@RequestMapping` 使用 SpEL 表达式引用统一配置的 API 版本：
+
+```java
+@RestController
+@RequestMapping("/${api.version}/system/users")
+public class UserController { ... }
+```
+
+版本配置位于 [application.yml:19](src/main/resources/application.yml#L19)：
+
+```yaml
+api:
+  version: v1
+```
+
+**优势**：
+- 集中管理 API 版本，避免拼写错误和不一致
+- 便于后续升级到 v2、v3 等版本
+- 可以在不同环境使用不同版本（如需要）
+- 修改版本时只需改动一处配置
+
 ### 命名约定
 
 - 实体类：`User`, `Role`, `Menu`（对应表名 `sys_user`, `sys_role`, `sys_menu`）
 - Repository：`UserRepository`, `RoleRepository`
 - Service：`UserService`, `RoleService`
-- Facade/AppService：`AuthAppService`, `UserAppService`（用于复杂业务编排）
+- AppService：`AuthAppService`, `UserAppService`（用于复杂业务编排）
 - Controller：`UserController`, `AuthController`
 - DTO：
   - 请求：`UserQueryReq`, `UserCreateReq`, `UserUpdateReq`
@@ -179,9 +202,10 @@ public class UserStatusConverter implements AttributeConverter<UserStatus, Integ
 迁移脚本位置：`src/main/resources/db/migration/`
 
 命名规则：`V{version}__{description}.sql`
+
+示例：
 - `V1__init_schema.sql` - 初始化表结构
 - `V2__init_data.sql` - 初始化数据
-- `V3__performance_indexes.sql` - 性能优化索引
 
 **重要**：
 - 迁移脚本一旦提交不可修改（Flyway 会校验 checksum）
@@ -220,12 +244,14 @@ CORS_ALLOWED_ORIGINS=http://localhost:3000
 
 开发环境访问：http://localhost:36600/movk-backend/swagger-ui.html
 
-所有接口前缀：`/movk-backend`
+所有接口格式：`/movk-backend/${api.version}/<模块>/<资源>`
+
+当前版本：`v1`
 
 ### 公开接口（无需认证）
 
-- `POST /auth/login` - 用户登录
-- `POST /auth/refresh` - 刷新 Token
+- `POST /v1/auth/login` - 用户登录
+- `POST /v1/auth/refresh` - 刷新 Token
 - `/actuator/health` - 健康检查
 
 ### 认证接口
@@ -269,7 +295,7 @@ mvn flyway:repair  # 修复 Flyway 状态
 
 ## 依赖说明
 
-- **Spring Boot 3.5**：核心框架
+- **Spring Boot 3.5.4**：核心框架
 - **Spring Security**：认证授权
 - **Spring Data JPA + Hibernate**：ORM
 - **PostgreSQL**：主数据库

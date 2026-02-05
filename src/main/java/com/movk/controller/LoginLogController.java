@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Tag(name = "登录日志管理")
 @RestController
-@RequestMapping("/api/monitor/login-logs")
+@RequestMapping("/${api.version}/monitor/login-logs")
 @RequiredArgsConstructor
 @Validated
 public class LoginLogController {

@@ -41,7 +41,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "文件管理", description = "文件上传、下载、查询等接口")
 @RestController
-@RequestMapping("/api/system/files")
+@RequestMapping("/${api.version}/system/files")
 @RequiredArgsConstructor
 @Validated
 public class FileController {

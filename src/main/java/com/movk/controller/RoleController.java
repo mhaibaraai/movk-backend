@@ -32,7 +32,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "角色管理", description = "角色相关接口")
 @RestController
-@RequestMapping("/api/system/roles")
+@RequestMapping("/${api.version}/system/roles")
 @RequiredArgsConstructor
 @Validated
 public class RoleController {

@@ -69,10 +69,10 @@ logPath: /home/ubuntu/apps/movk-backend/logs
 jwt:
   secret: ${JWT_SECRET}
   access-token:
-    expiration: 900         # AccessToken 有效期：15 分钟
+    expiration: 900         # 15 分钟
   refresh-token:
-    expiration: 604800      # RefreshToken 有效期：7 天
-    remember-me-expiration: 2592000  # 记住我有效期：30 天
+    expiration: 1440       # 1 天
+    remember-me-expiration: 10080   # 7 天
   header:
     name: Authorization
     prefix: "Bearer "

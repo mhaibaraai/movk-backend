@@ -27,7 +27,7 @@ import java.util.List;
  */
 @Tag(name = "认证管理", description = "用户认证相关接口")
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/${api.version}/auth")
 @RequiredArgsConstructor
 @Validated
 public class AuthController {

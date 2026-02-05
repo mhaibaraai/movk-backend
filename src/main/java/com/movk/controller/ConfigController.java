@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "系统配置管理", description = "系统配置相关接口")
 @RestController
-@RequestMapping("/api/system/configs")
+@RequestMapping("/${api.version}/system/configs")
 @RequiredArgsConstructor
 @Validated
 public class ConfigController {

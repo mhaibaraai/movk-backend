@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 @Tag(name = "在线用户管理", description = "在线用户监控相关接口")
 @RestController
-@RequestMapping("/api/monitor/online-users")
+@RequestMapping("/${api.version}/monitor/online-users")
 @RequiredArgsConstructor
 @Validated
 public class OnlineUserController {

@@ -28,7 +28,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "部门管理", description = "部门相关接口")
 @RestController
-@RequestMapping("/api/system/depts")
+@RequestMapping("/${api.version}/system/depts")
 @RequiredArgsConstructor
 @Validated
 public class DepartmentController {

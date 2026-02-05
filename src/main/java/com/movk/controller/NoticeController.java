@@ -32,7 +32,7 @@ import static com.movk.common.enums.OperationType.*;
  */
 @Tag(name = "通知公告管理", description = "通知公告相关接口")
 @RestController
-@RequestMapping("/api/system/notices")
+@RequestMapping("/${api.version}/system/notices")
 @RequiredArgsConstructor
 @Validated
 public class NoticeController {
