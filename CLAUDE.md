@@ -112,7 +112,10 @@ public List<User> findAll(Specification<User> spec) { ... }
 2. 调用 AuthAppService.loginAndIssueTokens()
    - 验证用户名密码
    - 加载用户角色和权限
-   - 生成 Access Token (2小时) 和 Refresh Token (7天)
+   - 生成 Access Token 和 Refresh Token
+     * dev 环境：Access Token 1 分钟（方便测试）
+     * prod 环境：Access Token 2 小时（7200 秒）
+     * Refresh Token：普通登录 1 天（86400 秒），记住我 7 天（604800 秒）
    - 记录登录日志
 3. 请求携带 Token → JwtAuthenticationFilter
    - 解析 Token，提取用户信息
@@ -284,8 +287,11 @@ mvn flyway:repair  # 修复 Flyway 状态
 ### Token 验证失败
 
 - 检查 JWT_SECRET 配置是否正确（至少 64 字符）
-- 检查 Token 是否过期（Access Token 2 小时，Refresh Token 7 天）
-- 使用 `/auth/refresh` 刷新 Token
+- 检查 Token 是否过期：
+  * dev 环境：Access Token 2 小时
+  * prod 环境：Access Token 2 小时
+  * Refresh Token：普通登录 1 天，记住我 7 天
+- 使用 `/${api.version}/auth/refresh` 刷新 Token
 
 ### 权限拒绝（403）
 

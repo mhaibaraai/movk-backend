@@ -13,6 +13,7 @@ public final class SecurityEndpoints {
             // 认证相关
             "/v1/auth/login",
             "/v1/auth/register",
+            "/v1/auth/refresh",
             // 文件下载与预览（公开访问）
             "/v1/system/files/download/**",
             "/v1/system/files/preview/**",
